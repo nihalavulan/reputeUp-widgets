@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import Masonry from 'react-masonry-css';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import Masonry from "react-masonry-css";
+import axios from "axios";
 
+// CRITICAL: Remove min-height completely
 const StyledWallMainWrapper = styled.div`
   padding: 2rem;
   background: #f7f7f7;
-  min-height: 100vh;
+  /* DO NOT set any height constraints */
 `;
 
 const TestimonialCard = styled.div`
@@ -59,15 +60,17 @@ const Wall = () => {
 
   useEffect(() => {
     axios
-      .get('https://app.reputeup.ai/api/review-settings-with-list/1749890233')
+      .get("https://app.reputeup.ai/api/review-settings-with-list/1749890233")
       .then((res) => {
         const data = res.data?.data?.reviews || [];
         // filter reviews that have text
-        const filtered = data.filter(r => r.review_text && r.review_text.trim() !== '');
+        const filtered = data.filter(
+          (r) => r.review_text && r.review_text.trim() !== ""
+        );
         setReviews(filtered);
       })
       .catch((err) => {
-        console.error('Error loading reviews', err);
+        console.error("Error loading reviews", err);
       });
   }, []);
 
@@ -78,7 +81,7 @@ const Wall = () => {
   };
 
   const renderStars = (rating) => {
-    return '★'.repeat(rating) + '☆'.repeat(5 - rating);
+    return "★".repeat(rating) + "☆".repeat(5 - rating);
   };
 
   return (
@@ -91,9 +94,16 @@ const Wall = () => {
         {reviews.map((review) => (
           <TestimonialCard key={review.id}>
             <ReviewerHeader>
-              <ReviewerImage src={review.customer_photo || 'https://randomuser.me/api/portraits/men/1.jpg'} />
+              <ReviewerImage
+                src={
+                  review.customer_photo ||
+                  "https://randomuser.me/api/portraits/men/1.jpg"
+                }
+              />
               <div>
-                <ReviewerName>{review.customer_firstname || 'Anonymous'}</ReviewerName>
+                <ReviewerName>
+                  {review.customer_firstname || "Anonymous"}
+                </ReviewerName>
                 <ReviewDate>{review.review_date}</ReviewDate>
               </div>
             </ReviewerHeader>
