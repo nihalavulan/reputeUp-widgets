@@ -20,3 +20,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.my-masonry-grid {
+  display: flex;
+  margin-left: -15px;
+  width: auto;
+}
+.my-masonry-grid_column {
+  padding-left: 15px;
+  background-clip: padding-box;
+}
