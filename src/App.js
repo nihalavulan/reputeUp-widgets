@@ -1,10 +1,15 @@
-import './App.css';
-import Hero from './Hero/Hero';
+import "./App.css";
+import Hero from "./Components/Hero/Hero";
+import { Routes, Route } from "react-router";
+import Wall from "./Components/Wall/Wall";
 
 function App() {
   return (
     <div>
-        <Hero />
+      <Routes>
+        <Route path="/" element={<Hero />} />
+        <Route path="/wall" element={<Wall />} />
+      </Routes>
     </div>
   );
 }
