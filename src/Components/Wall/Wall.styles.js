@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-// Main wrapper for the review wall
 export const StyledWallMainWrapper = styled.div`
   padding: 2rem;
   background: #ffffff;
@@ -8,115 +7,26 @@ export const StyledWallMainWrapper = styled.div`
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 `;
 
-// Individual testimonial card
-export const TestimonialCard = styled.div`
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.08);
-  margin-bottom: 1rem;
-  break-inside: avoid;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  border: 1px solid #d8d8d8;
-  
-  /* &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  } */
-`;
-
-// Header section containing reviewer info
-export const ReviewerHeader = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.8rem;
-`;
-
-// Reviewer profile image
-export const ReviewerImage = styled.img`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 0.75rem;
-  border: 2px solid #f0f0f0;
-  transition: border-color 0.2s ease;
-  
-  &:hover {
-    border-color: #e0e0e0;
-  }
-`;
-
-// Reviewer name styling
-export const ReviewerName = styled.h4`
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #333;
-  line-height: 1.2;
-`;
-
-// Review text content
-export const ReviewTitle = styled.h4`
-  font-size: 1rem;
-  font-weight: 600;
-  line-height: 1.5;
-  color: #101010;
-  /* margin: 0.8rem 0; */
-  word-wrap: break-word;
-  hyphens: auto;
-`;
-
-
-export const ReviewText = styled.p`
-  font-size: 0.95rem;
-  line-height: 1.5;
-  color: #555;
-  margin: 0.8rem 0;
-  word-wrap: break-word;
-  hyphens: auto;
-`;
-
-// Review date display
-export const ReviewDate = styled.div`
-  font-size: 0.75rem;
-  color: #888;
-  margin-top: 0.25rem;
-  font-weight: 400;
-`;
-
-// Star rating display
-export const StarRating = styled.div`
-  margin-top: 0.5rem;
-  color: #f39c12;
-  font-size: 1rem;
-  letter-spacing: 1px;
-  
-  &::selection {
-    background: transparent;
-  }
-`;
-
-// Loading state wrapper
 export const LoadingWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 3rem;
-  font-size: 1.1rem;
-  color: #666;
-  min-height: 200px;
-  
-  &::after {
-    content: '';
-    width: 20px;
-    height: 20px;
-    border: 2px solid #ddd;
-    border-top: 2px solid #666;
-    border-radius: 50%;
-    margin-left: 10px;
-    animation: spin 1s linear infinite;
-  }
+  padding: 4rem 2rem;
+  min-height: 300px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 16px;
+  margin: 2rem;
+`;
+
+export const LoadingSpinner = styled.div`
+  width: 60px;
+  height: 60px;
+  border: 4px solid #e3e3e3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1.5rem;
   
   @keyframes spin {
     0% { transform: rotate(0deg); }
@@ -124,7 +34,48 @@ export const LoadingWrapper = styled.div`
   }
 `;
 
-// Error state wrapper
+export const LoadingText = styled.div`
+  font-size: 1.2rem;
+  color: #555;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  text-align: center;
+`;
+
+export const LoadingSubtext = styled.div`
+  font-size: 0.9rem;
+  color: #888;
+  text-align: center;
+  opacity: 0.8;
+`;
+
+export const LoadingDots = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  
+  .dot {
+    width: 8px;
+    height: 8px;
+    background-color: #3498db;
+    border-radius: 50%;
+    animation: bounce 1.4s infinite ease-in-out both;
+    
+    &:nth-child(1) { animation-delay: -0.32s; }
+    &:nth-child(2) { animation-delay: -0.16s; }
+    &:nth-child(3) { animation-delay: 0s; }
+  }
+  
+  @keyframes bounce {
+    0%, 80%, 100% {
+      transform: scale(0);
+    }
+    40% {
+      transform: scale(1);
+    }
+  }
+`;
+
 export const ErrorWrapper = styled.div`
   background: #fee;
   border: 1px solid #fcc;
@@ -143,7 +94,6 @@ export const ErrorWrapper = styled.div`
   }
 `;
 
-// Empty state wrapper
 export const EmptyStateWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -174,7 +124,6 @@ export const EmptyStateWrapper = styled.div`
   }
 `;
 
-// Masonry grid custom styles
 export const MasonryGridStyles = `
   .my-masonry-grid {
     display: flex;
@@ -191,7 +140,6 @@ export const MasonryGridStyles = `
     margin-bottom: 1rem;
   }
   
-  /* Responsive adjustments */
   @media (max-width: 700px) {
     .my-masonry-grid {
       margin-left: -0.5rem;
@@ -206,76 +154,3 @@ export const MasonryGridStyles = `
     }
   }
 `;
-
-// Reviewer info container
-export const ReviewerInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-`;
-
-// Rating container with additional styling options
-export const RatingContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 0.75rem;
-  
-  @media (max-width: 500px) {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.25rem;
-  }
-`;
-
-// Optional: Verified badge component
-export const VerifiedBadge = styled.span`
-  display: inline-flex;
-  align-items: center;
-  font-size: 0.7rem;
-  color: #059669;
-  background: #d1fae5;
-  padding: 0.2rem 0.4rem;
-  border-radius: 4px;
-  margin-left: 0.5rem;
-  font-weight: 500;
-  
-  &::before {
-    content: '✓';
-    margin-right: 0.2rem;
-    font-weight: bold;
-  }
-`;
-
-
-export const StyledVideoMain = styled.div`
-width: 100%;
-min-height: 200px;
-background-color: red;
-
-`
-
-// Theme variants (optional)
-export const themes = {
-  default: {
-    background: '#f7f7f7',
-    cardBackground: 'white',
-    textColor: '#333',
-    mutedTextColor: '#888',
-    starColor: '#f39c12',
-  },
-  dark: {
-    background: '#1a1a1a',
-    cardBackground: '#2d2d2d',
-    textColor: '#ffffff',
-    mutedTextColor: '#aaaaaa',
-    starColor: '#ffd700',
-  },
-  minimal: {
-    background: '#ffffff',
-    cardBackground: '#ffffff',
-    textColor: '#333333',
-    mutedTextColor: '#666666',
-    starColor: '#ff6b6b',
-  }
-};

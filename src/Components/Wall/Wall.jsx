@@ -2,21 +2,15 @@ import React, { useEffect, useState, useCallback, useMemo } from "react";
 import Masonry from "react-masonry-css";
 import {
   StyledWallMainWrapper,
-  TestimonialCard,
-  ReviewerHeader,
-  ReviewerImage,
-  ReviewerName,
-  ReviewText,
-  ReviewDate,
-  StarRating,
   LoadingWrapper,
+  LoadingSpinner,
+  LoadingText,
+  LoadingSubtext,
+  LoadingDots,
   ErrorWrapper,
   EmptyStateWrapper,
-  ReviewerInfo,
   MasonryGridStyles,
 } from "./Wall.styles";
-import { ReviewTitle } from "./Wall.styles";
-import { StyledVideoMain } from "./Wall.styles";
 import {
   PlayButton,
   StyledBodyAuthorDetailsWrapper,
@@ -34,10 +28,8 @@ import {
   StyledWallCard,
 } from "./WallCard.styled";
 import { Icon } from "@iconify/react";
-import { MaterialSymbolsStarRounded } from "../../assets/icons/CardIcons";
 import StarIcon from "../../assets/icons/Star";
 
-// Custom hook for iframe resizing
 const useIframeResize = () => {
   const triggerResize = useCallback(() => {
     if (window.parentIFrame?.size) {
@@ -48,7 +40,6 @@ const useIframeResize = () => {
   return triggerResize;
 };
 
-// Custom hook for fetching reviews
 const useReviews = (apiUrl) => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -69,7 +60,6 @@ const useReviews = (apiUrl) => {
         const data = await response.json();
         const reviewsData = data?.data?.reviews || [];
 
-        // Filter out reviews without text and sort by date (newest first)
         const validReviews = reviewsData.sort(
           (a, b) => new Date(b.review_date) - new Date(a.review_date)
         );
@@ -217,36 +207,6 @@ const ReviewCard = React.memo(({ review, onImageLoad, renderStars }) => {
   );
 });
 
-// const ReviewCard = React.memo(({ review, onImageLoad, renderStars }) => (
-//   <TestimonialCard>
-//     <ReviewerHeader>
-//       <ReviewerImage
-//         src={review.customer_photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(review.customer_firstname || 'Anonymous')}&background=e1e5e9&color=64748b`}
-//         alt={`${review.customer_firstname || 'Anonymous'} avatar`}
-//         onLoad={onImageLoad}
-//         onError={(e) => {
-//           e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(review.customer_firstname || 'Anonymous')}&background=e1e5e9&color=64748b`;
-//         }}
-//       />
-//       <ReviewerInfo>
-//         <ReviewerName>
-//           {review.customer_firstname || "Anonymous"}
-//         </ReviewerName>
-//         <ReviewDate>
-//           {new Date(review.review_date).toLocaleDateString('en-US', {
-//             year: 'numeric',
-//             month: 'short',
-//             day: 'numeric'
-//           })}
-//         </ReviewDate>
-//       </ReviewerInfo>
-//     </ReviewerHeader>
-//     <ReviewTitle>{review.review_title}</ReviewTitle>
-//     <ReviewText>{review.review_text}</ReviewText>
-//     <StarRating>{renderStars(review.rating)}</StarRating>
-//   </TestimonialCard>
-// ));
-
 ReviewCard.displayName = "ReviewCard";
 
 const Wall = ({ apiId = "1749890233" }) => {
@@ -254,7 +214,6 @@ const Wall = ({ apiId = "1749890233" }) => {
   const { reviews, loading, error } = useReviews(apiUrl);
   const triggerResize = useIframeResize();
 
-  // Memoized breakpoint configuration
   const breakpointColumnsObj = useMemo(
     () => ({
       default: 3,
@@ -264,7 +223,6 @@ const Wall = ({ apiId = "1749890233" }) => {
     []
   );
 
-  // Memoized star rendering function
   const renderStars = useMemo(
     () => (rating) => {
       const validRating = Math.max(0, Math.min(5, Math.floor(rating || 0)));
@@ -283,12 +241,10 @@ const Wall = ({ apiId = "1749890233" }) => {
     []
   );
 
-  // Handle image load with debounced resize
   const handleImageLoad = useCallback(() => {
     setTimeout(triggerResize, 50);
   }, [triggerResize]);
 
-  // Trigger resize when reviews change
   useEffect(() => {
     if (reviews.length > 0) {
       const timer = setTimeout(triggerResize, 300);
@@ -299,7 +255,16 @@ const Wall = ({ apiId = "1749890233" }) => {
   if (loading) {
     return (
       <StyledWallMainWrapper>
-        <LoadingWrapper>Loading reviews...</LoadingWrapper>
+        <LoadingWrapper>
+          <LoadingSpinner />
+          <LoadingText>Loading Reviews</LoadingText>
+          <LoadingSubtext>Please wait while we fetch the latest reviews</LoadingSubtext>
+          <LoadingDots>
+            <div className="dot"></div>
+            <div className="dot"></div>
+            <div className="dot"></div>
+          </LoadingDots>
+        </LoadingWrapper>
       </StyledWallMainWrapper>
     );
   }

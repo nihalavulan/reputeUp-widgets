@@ -6,8 +6,15 @@ export const StyledWallCard = styled.div`
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.08);
   margin-bottom: 1rem;
   break-inside: avoid;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   border: 1px solid #d8d8d8;
+  cursor: pointer;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border-color: #c0c0c0;
+  }
 `;
 
 export const StyledVideoWrapper = styled.div`
@@ -28,10 +35,13 @@ export const StyledVideo = styled.video`
 `;
 
 export const PlayButton = styled.div`
-  /* position: absolute; */
-  /* bottom: 10px;
-  right: 10px; */
   cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  
+  &:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
 `;
 
 export const StyledDetailsOnVideoWrapper = styled.div`
@@ -41,7 +51,6 @@ export const StyledDetailsOnVideoWrapper = styled.div`
   position: absolute;
   bottom: 0;
   padding: 1rem 1.5rem;
-
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -54,7 +63,6 @@ export const StyledName = styled.h4`
   font-weight: 600;
   line-height: 1.5;
   color: #ffffff;
-  /* margin: 0.8rem 0; */
   word-wrap: break-word;
   hyphens: auto;
 `;
@@ -62,9 +70,7 @@ export const StyledName = styled.h4`
 export const StyledDesignation = styled.h4`
   font-size: 1rem;
   font-weight: 400;
-  /* line-height: 1.5; */
   color: #dadada;
-  /* margin: 0.8rem 0; */
   word-wrap: break-word;
   hyphens: auto;
 `;
@@ -73,7 +79,6 @@ export const StyledCardBodyWrapper = styled.div`
   width: 100%;
   height: fit-content;
   padding: 0 1rem 1rem 1rem;
-  /* background-color: #2a0404; */
   border-radius: 12px;
 
   & > h3 {
@@ -83,16 +88,16 @@ export const StyledCardBodyWrapper = styled.div`
     margin-bottom: 0.5rem;
     line-height: 1.5;
     word-wrap: break-word;
-  hyphens: auto;
+    hyphens: auto;
   }
 
   & > p {
     font-size: 1rem;
     font-weight: 400;
     color: #434343;
-     line-height: 1.3;
+    line-height: 1.3;
     word-wrap: break-word;
-  hyphens: auto;
+    hyphens: auto;
   }
 `;
 
@@ -101,7 +106,6 @@ export const StyledBodyHeadersWrapper = styled.div`
 `;
 
 export const StyledBodyHeader = styled.div`
-  /* padding: 1rem; */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -111,10 +115,12 @@ export const StyledBodyHeader = styled.div`
 export const StyledReviewLinkWrapper = styled.a`
   text-decoration: none;
 `;
+
 export const StyledBodyAuthorDetailsWrapper = styled.div`
   display: flex;
   gap: 10px;
   align-items: center;
+  
   & > img {
     width: 42px;
     height: 42px;
@@ -136,7 +142,6 @@ export const StyledBodyAuthorDetailsWrapper = styled.div`
     }
   }
 `;
-
 
 export const StyledReviewDate = styled.h5`
   font-size: 0.75rem;
