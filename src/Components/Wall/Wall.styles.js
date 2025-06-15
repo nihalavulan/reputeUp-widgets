@@ -3,7 +3,7 @@ import styled from "styled-components";
 // Main wrapper for the review wall
 export const StyledWallMainWrapper = styled.div`
   padding: 2rem;
-  background: #f7f7f7;
+  background: #ffffff;
   height: auto;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 `;
@@ -13,15 +13,16 @@ export const TestimonialCard = styled.div`
   background: white;
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.08);
   margin-bottom: 1rem;
   break-inside: avoid;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #d8d8d8;
   
-  &:hover {
+  /* &:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  }
+  } */
 `;
 
 // Header section containing reviewer info
