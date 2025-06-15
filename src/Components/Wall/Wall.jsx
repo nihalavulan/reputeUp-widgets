@@ -231,7 +231,7 @@ const Wall = ({ apiId = "1749890233" }) => {
 
   const renderStars = useMemo(
     () => (rating) => {
-      const validRating = Math.max(0, Math.min(5, Math.floor(rating || 0)));
+      // const validRating = Math.max(0, Math.min(5, Math.floor(rating || 0)));
       const stars = [];
 
       for (let i = 0; i < 5; i++) {
