@@ -57,6 +57,17 @@ export const ReviewerName = styled.h4`
 `;
 
 // Review text content
+export const ReviewTitle = styled.h4`
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #101010;
+  /* margin: 0.8rem 0; */
+  word-wrap: break-word;
+  hyphens: auto;
+`;
+
+
 export const ReviewText = styled.p`
   font-size: 0.95rem;
   line-height: 1.5;
@@ -235,6 +246,14 @@ export const VerifiedBadge = styled.span`
     font-weight: bold;
   }
 `;
+
+
+export const StyledVideoMain = styled.div`
+width: 100%;
+min-height: 200px;
+background-color: red;
+
+`
 
 // Theme variants (optional)
 export const themes = {

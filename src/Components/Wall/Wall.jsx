@@ -13,8 +13,29 @@ import {
   ErrorWrapper,
   EmptyStateWrapper,
   ReviewerInfo,
-  MasonryGridStyles
+  MasonryGridStyles,
 } from "./Wall.styles";
+import { ReviewTitle } from "./Wall.styles";
+import { StyledVideoMain } from "./Wall.styles";
+import {
+  PlayButton,
+  StyledBodyAuthorDetailsWrapper,
+  StyledBodyHeader,
+  StyledBodyHeadersWrapper,
+  StyledCardBodyWrapper,
+  StyledDesignation,
+  StyledDetailsOnVideo,
+  StyledDetailsOnVideoWrapper,
+  StyledName,
+  StyledReviewDate,
+  StyledReviewLinkWrapper,
+  StyledVideo,
+  StyledVideoWrapper,
+  StyledWallCard,
+} from "./WallCard.styled";
+import { Icon } from "@iconify/react";
+import { MaterialSymbolsStarRounded } from "../../assets/icons/CardIcons";
+import StarIcon from "../../assets/icons/Star";
 
 // Custom hook for iframe resizing
 const useIframeResize = () => {
@@ -40,19 +61,19 @@ const useReviews = (apiUrl) => {
         setError(null);
 
         const response = await fetch(apiUrl);
-        
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const data = await response.json();
         const reviewsData = data?.data?.reviews || [];
-        
+
         // Filter out reviews without text and sort by date (newest first)
-        const validReviews = reviewsData
-          .filter(review => review.review_text?.trim())
-          .sort((a, b) => new Date(b.review_date) - new Date(a.review_date));
-          
+        const validReviews = reviewsData.sort(
+          (a, b) => new Date(b.review_date) - new Date(a.review_date)
+        );
+
         setReviews(validReviews);
       } catch (err) {
         console.error("Error loading reviews:", err);
@@ -68,37 +89,165 @@ const useReviews = (apiUrl) => {
   return { reviews, loading, error };
 };
 
-// Memoized review card component
-const ReviewCard = React.memo(({ review, onImageLoad, renderStars }) => (
-  <TestimonialCard>
-    <ReviewerHeader>
-      <ReviewerImage
-        src={review.customer_photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(review.customer_firstname || 'Anonymous')}&background=e1e5e9&color=64748b`}
-        alt={`${review.customer_firstname || 'Anonymous'} avatar`}
-        onLoad={onImageLoad}
-        onError={(e) => {
-          e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(review.customer_firstname || 'Anonymous')}&background=e1e5e9&color=64748b`;
-        }}
-      />
-      <ReviewerInfo>
-        <ReviewerName>
-          {review.customer_firstname || "Anonymous"}
-        </ReviewerName>
-        <ReviewDate>
-          {new Date(review.review_date).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-          })}
-        </ReviewDate>
-      </ReviewerInfo>
-    </ReviewerHeader>
-    <ReviewText>{review.review_text}</ReviewText>
-    <StarRating>{renderStars(review.rating)}</StarRating>
-  </TestimonialCard>
-));
+const ReviewCard = React.memo(({ review, onImageLoad, renderStars }) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = React.useRef(null);
 
-ReviewCard.displayName = 'ReviewCard';
+  const handleTogglePlay = () => {
+    if (!videoRef.current) return;
+    if (isPlaying) {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      videoRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
+  return (
+    <StyledWallCard>
+      {review.video_path && (
+        <StyledVideoWrapper
+          isOnlyVideo={review.video_path && !review.review_text}
+        >
+          <StyledVideo
+            ref={videoRef}
+            onClick={handleTogglePlay}
+            controls={false}
+            preload="metadata"
+          >
+            <source
+              src={
+                "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4"
+              }
+              type="video/mp4"
+            />
+            Your browser does not support the video tag.
+          </StyledVideo>
+
+          <StyledDetailsOnVideoWrapper>
+            <StyledDetailsOnVideo>
+              {review.rating && renderStars(review.rating)}
+              <StyledName>
+                {review.customer_firstname
+                  ? `${review.customer_firstname}${
+                      review.customer_lastname
+                        ? " " + review.customer_lastname
+                        : ""
+                    }`
+                  : ""}
+              </StyledName>
+              <StyledDesignation>
+                {review.author_designation || review.work_title}
+              </StyledDesignation>
+            </StyledDetailsOnVideo>
+
+            <PlayButton onClick={handleTogglePlay}>
+              {isPlaying ? (
+                <Icon
+                  icon="material-symbols:pause-rounded"
+                  width="44"
+                  height="44"
+                  style={{ color: "#fff" }}
+                />
+              ) : (
+                <Icon
+                  icon="material-symbols:play-arrow-rounded"
+                  width="44"
+                  height="44"
+                  style={{ color: "#fff" }}
+                />
+              )}
+            </PlayButton>
+          </StyledDetailsOnVideoWrapper>
+        </StyledVideoWrapper>
+      )}
+
+      {!review.video_path && (
+        <StyledBodyHeadersWrapper>
+          <StyledBodyHeader>
+            <StyledBodyAuthorDetailsWrapper>
+              <img src={review?.customer_photo || review?.author_pic} alt="" />
+              <div>
+                <h3>{review.author_name || review.customer_firstname}</h3>
+                <h6>
+                  {review.author_designation ||
+                    review.work_title }
+                </h6>
+              </div>
+            </StyledBodyAuthorDetailsWrapper>
+
+            <StyledReviewLinkWrapper href={review.review_link} target="_blank">
+              {review.review_link && (
+                <img
+                  src={`https://www.google.com/s2/favicons?domain=${
+                    new URL(review.review_link).hostname
+                  }&sz=64`}
+                  alt="favicon"
+                  style={{
+                    width: "25px",
+                    height: "25px",
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                  }}
+                />
+              )}
+            </StyledReviewLinkWrapper>
+          </StyledBodyHeader>
+
+          {review.rating && renderStars(review.rating)}
+        </StyledBodyHeadersWrapper>
+      )}
+
+      {(review.review_text || review.review_title) && (
+        <StyledCardBodyWrapper>
+          {review.review_title && <h3>{review.review_title}</h3>}
+          <p>{review.review_text}</p>
+        </StyledCardBodyWrapper>
+      )}
+
+      <StyledReviewDate>
+        {new Date(review.review_date).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })}
+      </StyledReviewDate>
+    </StyledWallCard>
+  );
+});
+
+// const ReviewCard = React.memo(({ review, onImageLoad, renderStars }) => (
+//   <TestimonialCard>
+//     <ReviewerHeader>
+//       <ReviewerImage
+//         src={review.customer_photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(review.customer_firstname || 'Anonymous')}&background=e1e5e9&color=64748b`}
+//         alt={`${review.customer_firstname || 'Anonymous'} avatar`}
+//         onLoad={onImageLoad}
+//         onError={(e) => {
+//           e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(review.customer_firstname || 'Anonymous')}&background=e1e5e9&color=64748b`;
+//         }}
+//       />
+//       <ReviewerInfo>
+//         <ReviewerName>
+//           {review.customer_firstname || "Anonymous"}
+//         </ReviewerName>
+//         <ReviewDate>
+//           {new Date(review.review_date).toLocaleDateString('en-US', {
+//             year: 'numeric',
+//             month: 'short',
+//             day: 'numeric'
+//           })}
+//         </ReviewDate>
+//       </ReviewerInfo>
+//     </ReviewerHeader>
+//     <ReviewTitle>{review.review_title}</ReviewTitle>
+//     <ReviewText>{review.review_text}</ReviewText>
+//     <StarRating>{renderStars(review.rating)}</StarRating>
+//   </TestimonialCard>
+// ));
+
+ReviewCard.displayName = "ReviewCard";
 
 const Wall = ({ apiId = "1749890233" }) => {
   const apiUrl = `https://app.reputeup.ai/api/review-settings-with-list/${apiId}`;
@@ -106,17 +255,33 @@ const Wall = ({ apiId = "1749890233" }) => {
   const triggerResize = useIframeResize();
 
   // Memoized breakpoint configuration
-  const breakpointColumnsObj = useMemo(() => ({
-    default: 3,
-    1100: 2,
-    700: 1,
-  }), []);
+  const breakpointColumnsObj = useMemo(
+    () => ({
+      default: 3,
+      1100: 2,
+      700: 1,
+    }),
+    []
+  );
 
   // Memoized star rendering function
-  const renderStars = useMemo(() => (rating) => {
-    const validRating = Math.max(0, Math.min(5, Math.floor(rating || 0)));
-    return "★".repeat(validRating) + "☆".repeat(5 - validRating);
-  }, []);
+  const renderStars = useMemo(
+    () => (rating) => {
+      const validRating = Math.max(0, Math.min(5, Math.floor(rating || 0)));
+      const stars = [];
+
+      for (let i = 0; i < 5; i++) {
+        stars.push(<StarIcon />);
+      }
+
+      return (
+        <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+          {stars}
+        </div>
+      );
+    },
+    []
+  );
 
   // Handle image load with debounced resize
   const handleImageLoad = useCallback(() => {
@@ -142,9 +307,7 @@ const Wall = ({ apiId = "1749890233" }) => {
   if (error) {
     return (
       <StyledWallMainWrapper>
-        <ErrorWrapper>
-          Failed to load reviews: {error}
-        </ErrorWrapper>
+        <ErrorWrapper>Failed to load reviews: {error}</ErrorWrapper>
       </StyledWallMainWrapper>
     );
   }
