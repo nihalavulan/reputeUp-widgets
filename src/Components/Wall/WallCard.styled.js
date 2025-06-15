@@ -11,7 +11,6 @@ export const StyledWallCard = styled.div`
 `;
 
 export const StyledVideoWrapper = styled.div`
-  background: #a22727;
   border-radius: ${({ isOnlyVideo }) =>
     isOnlyVideo ? "12px" : "12px 12px 0 0"};
   width: 100%;
