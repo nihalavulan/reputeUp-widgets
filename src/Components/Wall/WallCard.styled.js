@@ -144,5 +144,5 @@ export const StyledReviewDate = styled.h5`
   color: #888;
   margin-top: 0.25rem;
   font-weight: 500;
-  padding: 0 1rem 1rem 1rem;
+  padding: 0.5rem 1rem 1rem 1rem;
 `;
