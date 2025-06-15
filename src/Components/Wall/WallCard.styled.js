@@ -37,7 +37,7 @@ export const StyledVideo = styled.video`
 export const PlayButton = styled.div`
   cursor: pointer;
   transition: transform 0.2s ease, opacity 0.2s ease;
-  
+  z-index: 1000;
   &:hover {
     transform: scale(1.1);
     opacity: 0.8;
