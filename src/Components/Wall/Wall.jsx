@@ -11,6 +11,7 @@ import {
   EmptyStateWrapper,
   MasonryGridStyles,
 } from "./Wall.styles";
+
 import {
   PlayButton,
   StyledBodyAuthorDetailsWrapper,
@@ -29,6 +30,7 @@ import {
 } from "./WallCard.styled";
 import { Icon } from "@iconify/react";
 import StarIcon from "../../assets/icons/Star";
+import { LoadMoreButton } from "./Wall.styles";
 
 const useIframeResize = () => {
   const triggerResize = useCallback(() => {
@@ -213,6 +215,10 @@ const Wall = ({ apiId = "1749890233" }) => {
   const apiUrl = `https://app.reputeup.ai/api/review-settings-with-list/${apiId}`;
   const { reviews, loading, error } = useReviews(apiUrl);
   const triggerResize = useIframeResize();
+  
+  // Pagination state
+  const [displayedCount, setDisplayedCount] = useState(12);
+  const ITEMS_PER_PAGE = 12;
 
   const breakpointColumnsObj = useMemo(
     () => ({
@@ -229,7 +235,7 @@ const Wall = ({ apiId = "1749890233" }) => {
       const stars = [];
 
       for (let i = 0; i < 5; i++) {
-        stars.push(<StarIcon />);
+        stars.push(<StarIcon key={i} />);
       }
 
       return (
@@ -245,12 +251,29 @@ const Wall = ({ apiId = "1749890233" }) => {
     setTimeout(triggerResize, 50);
   }, [triggerResize]);
 
+  const handleLoadMore = useCallback(() => {
+    setDisplayedCount(prev => prev + ITEMS_PER_PAGE);
+  }, []);
+
+  // Get the reviews to display
+  const displayedReviews = useMemo(() => {
+    return reviews.slice(0, displayedCount);
+  }, [reviews, displayedCount]);
+
+  // Check if there are more reviews to show
+  const hasMoreReviews = reviews.length > displayedCount;
+
   useEffect(() => {
-    if (reviews.length > 0) {
+    if (displayedReviews.length > 0) {
       const timer = setTimeout(triggerResize, 300);
       return () => clearTimeout(timer);
     }
-  }, [reviews.length, triggerResize]);
+  }, [displayedReviews.length, triggerResize]);
+
+  // Reset displayed count when reviews change
+  useEffect(() => {
+    setDisplayedCount(ITEMS_PER_PAGE);
+  }, [reviews]);
 
   if (loading) {
     return (
@@ -297,7 +320,7 @@ const Wall = ({ apiId = "1749890233" }) => {
           className="my-masonry-grid"
           columnClassName="my-masonry-grid_column"
         >
-          {reviews.map((review) => (
+          {displayedReviews.map((review) => (
             <ReviewCard
               key={`${review.id}-${review.review_date}`}
               review={review}
@@ -306,6 +329,12 @@ const Wall = ({ apiId = "1749890233" }) => {
             />
           ))}
         </Masonry>
+        
+        {hasMoreReviews && (
+          <LoadMoreButton onClick={handleLoadMore}>
+            Load More Reviews ({reviews.length - displayedCount} remaining)
+          </LoadMoreButton>
+        )}
       </StyledWallMainWrapper>
     </>
   );
