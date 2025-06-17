@@ -12,7 +12,6 @@ import {
   Indicator,
   StyledReviewLinkWrapper
 } from "./Flash.styled";
-import { Icon } from "@iconify/react";
 import StarIcon from "../../assets/icons/Star";
 import { useReviews } from "../../hooks/useReviews";
 
@@ -82,16 +81,6 @@ const Flash = ({ apiId = "1749890233" }) => {
     },
     []
   );
-
-  const handleNext = useCallback(() => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setCurrentIndex((prev) => (prev + 1) % textReviews.length);
-      setAutoPlay(false);
-      setTimeout(() => setIsTransitioning(false), 50);
-    }, 300);
-  }, [textReviews.length, isTransitioning]);
 
   const handleIndicatorClick = useCallback((index) => {
     if (isTransitioning || index === currentIndex) return;
