@@ -1,0 +1,17 @@
+  <section id="testimonials" class="testimonials">
+            <h2>What Our Clients Say</h2>
+            <p>Don't just take our word for it. Here's what our amazing travelers have to say about their unforgettable experiences with FlyKefi.</p>
+            
+                <script type="text/javascript" src="https://unpkg.com/iframe-resizer@4.3.1/js/iframeResizer.min.js"></script>
+                <iframe 
+                    id="my-testimonial-widget" 
+                    src="https://widgetify-sample.netlify.app/wall" 
+                    frameborder="0" 
+                    scrolling="no" 
+                    width="100%"
+                    style="border: none; display: block;">
+                </iframe>
+                <script type="text/javascript">
+                    iFrameResize({ log: false, checkOrigin: false }, "#my-testimonial-widget");
+                </script>
+    </section>

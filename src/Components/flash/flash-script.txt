@@ -1,0 +1,32 @@
+ <script src="https://unpkg.com/iframe-resizer@4.3.1/js/iframeResizer.min.js"></script>
+    <iframe id="flash-testimonial-widget" src="http://localhost:3000/flash?side=left" frameborder="0" scrolling="no" width="1"
+        height="1" style="border: none;"></iframe>
+    <script>
+        (function () {
+            const iframe = document.getElementById('flash-testimonial-widget');
+
+            function positionIframe(side = 'right') {
+                const isMobile = window.innerWidth <= 768;
+                Object.assign(iframe.style, {
+                    position: 'fixed',
+                    bottom: '20px',
+                    [side]: isMobile ? '10px' : '20px',
+                    zIndex: '9999',
+                    border: 'none',
+                    width: isMobile ? '280px' : '320px',
+                    maxWidth: 'calc(100vw - 40px)'
+                });
+            }
+
+            positionIframe('right');
+            iFrameResize({ log: false, checkOrigin: false }, iframe);
+            window.addEventListener('resize', () => positionIframe('right'));
+
+            // Listen for positioning messages from iframe
+            window.addEventListener('message', function (event) {
+                if (event.data && event.data.type === 'FLASH_POSITION') {
+                    positionIframe(event.data.side || 'right');
+                }
+            });
+        })();
+    </script>
