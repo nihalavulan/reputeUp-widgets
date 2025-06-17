@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import {
   FlashWrapper,
   FlashCard,
@@ -44,8 +44,29 @@ const Flash = ({ apiId = "1749890233" }) => {
   const [autoPlay, setAutoPlay] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [expandedReviews, setExpandedReviews] = useState(new Set());
+  const [truncatedReviews, setTruncatedReviews] = useState(new Set());
+  
+  const textRefs = useRef({});
 
-  const AUTO_ADVANCE_INTERVAL = 3000; // 5 seconds
+  const AUTO_ADVANCE_INTERVAL = 3000; // 3 seconds
+
+  // Check if text is truncated
+  const checkTextTruncation = useCallback((reviewIndex) => {
+    const textElement = textRefs.current[reviewIndex];
+    if (textElement) {
+      const isOverflowing = textElement.scrollHeight > textElement.clientHeight;
+      setTruncatedReviews(prev => {
+        const newSet = new Set(prev);
+        if (isOverflowing) {
+          newSet.add(reviewIndex);
+        } else {
+          newSet.delete(reviewIndex);
+        }
+        return newSet;
+      });
+    }
+  }, []);
 
   const renderStars = useMemo(
     () => (rating) => {
@@ -82,6 +103,21 @@ const Flash = ({ apiId = "1749890233" }) => {
     }, 300);
   }, [isTransitioning, currentIndex]);
 
+  const toggleReadMore = useCallback((reviewIndex) => {
+    setExpandedReviews(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(reviewIndex)) {
+        newSet.delete(reviewIndex);
+      } else {
+        newSet.add(reviewIndex);
+      }
+      return newSet;
+    });
+    
+    // Trigger resize after state update
+    setTimeout(triggerResize, 100);
+  }, [triggerResize]);
+
   // Auto-advance functionality
   useEffect(() => {
     if (!autoPlay || textReviews.length <= 1 || isTransitioning || isHovered) return;
@@ -102,13 +138,22 @@ const Flash = ({ apiId = "1749890233" }) => {
     setCurrentIndex(0);
     setAutoPlay(true);
     setIsTransitioning(false);
+    setExpandedReviews(new Set());
+    setTruncatedReviews(new Set());
   }, [textReviews]);
+
+  // Check truncation when current review changes
+  useEffect(() => {
+    setTimeout(() => {
+      checkTextTruncation(currentIndex);
+    }, 100);
+  }, [currentIndex, checkTextTruncation]);
 
   // Trigger resize when content changes
   useEffect(() => {
     const timer = setTimeout(triggerResize, 100);
     return () => clearTimeout(timer);
-  }, [currentIndex, triggerResize]);
+  }, [currentIndex, expandedReviews, triggerResize]);
 
   // Set up body styles and communicate with parent
   useEffect(() => {
@@ -157,6 +202,8 @@ const Flash = ({ apiId = "1749890233" }) => {
   }
 
   const currentReview = textReviews[currentIndex];
+  const isExpanded = expandedReviews.has(currentIndex);
+  const isTruncated = truncatedReviews.has(currentIndex);
 
   return (
     <FlashWrapper side={side}>
@@ -179,28 +226,43 @@ const Flash = ({ apiId = "1749890233" }) => {
                   {(currentReview.customer_firstname || currentReview.author_name || 'A').charAt(0)}
                 </div>
               )}
-              <div className="author-info">
-                <h4>
-                  {currentReview.customer_firstname
-                    ? `${currentReview.customer_firstname}${
-                        currentReview.customer_lastname
-                          ? " " + currentReview.customer_lastname
-                          : ""
-                      }`
-                    : currentReview.author_name || "Anonymous"}
-                </h4>
-                <span>
-                  {currentReview.author_designation || currentReview.work_title || "Customer"}
-                </span>
-              </div>
             </FlashAuthor>
-          </FlashHeader>
+            <div>
 
           <FlashText>
             {currentReview.review_title && (
               <h3 className="review-title">{currentReview.review_title}</h3>
             )}
-            <p>{currentReview.review_text}</p>
+            <p 
+              ref={el => textRefs.current[currentIndex] = el}
+              style={{ 
+                display: isExpanded ? 'block' : '-webkit-box',
+                WebkitLineClamp: isExpanded ? 'unset' : 3,
+                WebkitBoxOrient: isExpanded ? 'unset' : 'vertical',
+                overflow: isExpanded ? 'visible' : 'hidden'
+              }}
+            >
+              {currentReview.review_text}
+            </p>
+            {isTruncated && (
+              <button
+                onClick={() => toggleReadMore(currentIndex)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#1976d2',
+                  fontSize: '11px',
+                  cursor: 'pointer',
+                  padding: '2px 0 0 0',
+                  textDecoration: 'none',
+                  fontWeight: '500'
+                }}
+                onMouseOver={(e) => e.target.style.textDecoration = 'underline'}
+                onMouseOut={(e) => e.target.style.textDecoration = 'none'}
+              >
+                {isExpanded ? 'Read less' : 'Read more'}
+              </button>
+            )}
           </FlashText>
 
           <FlashFooter>
@@ -226,6 +288,12 @@ const Flash = ({ apiId = "1749890233" }) => {
               )}
             </StyledReviewLinkWrapper>
           </FlashFooter>
+
+            </div>
+          </FlashHeader>
+
+          
+
         </FlashContent>
 
         {textReviews.length > 1 && (

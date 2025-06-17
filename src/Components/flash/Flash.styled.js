@@ -94,6 +94,7 @@ export const FlashHeader = styled.div`
   display: flex;
   align-items: flex-start;
   margin-bottom: 8px;
+  gap: 10px;
 `;
 
 export const FlashAuthor = styled.div`
