@@ -31,6 +31,7 @@ import {
 import { Icon } from "@iconify/react";
 import StarIcon from "../../assets/icons/Star";
 import { LoadMoreButton } from "./Wall.styles";
+import { useReviews } from "../../hooks/useReviews";
 
 const useIframeResize = () => {
   const triggerResize = useCallback(() => {
@@ -40,45 +41,6 @@ const useIframeResize = () => {
   }, []);
 
   return triggerResize;
-};
-
-const useReviews = (apiUrl) => {
-  const [reviews, setReviews] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const response = await fetch(apiUrl);
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        const reviewsData = data?.data?.reviews || [];
-
-        const validReviews = reviewsData.sort(
-          (a, b) => new Date(b.review_date) - new Date(a.review_date)
-        );
-
-        setReviews(validReviews);
-      } catch (err) {
-        console.error("Error loading reviews:", err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchReviews();
-  }, [apiUrl]);
-
-  return { reviews, loading, error };
 };
 
 const ReviewCard = React.memo(({ review, onImageLoad, renderStars }) => {
@@ -212,8 +174,7 @@ const ReviewCard = React.memo(({ review, onImageLoad, renderStars }) => {
 ReviewCard.displayName = "ReviewCard";
 
 const Wall = ({ apiId = "1749890233" }) => {
-  const apiUrl = `https://app.reputeup.ai/api/review-settings-with-list/${apiId}`;
-  const { reviews, loading, error } = useReviews(apiUrl);
+  const { reviews, loading, error } = useReviews(apiId);
   const triggerResize = useIframeResize();
   
   // Pagination state
