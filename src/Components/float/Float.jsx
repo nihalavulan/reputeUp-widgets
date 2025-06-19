@@ -215,7 +215,7 @@ const Float = ({ apiId = "1749890233" }) => {
           <FloatTopRow>
             <QuoteIconWrap><QuoteIcon /></QuoteIconWrap>
           </FloatTopRow>
-         <div>
+         <div style={{ flex: 1 }}>
          <FloatText isExpanded={isExpanded}>
             {isExpanded ? (
               <>
