@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router";
 import Wall from "./Components/Wall/Wall";
 import Flash from "./Components/flash/Flash";
 import Float from "./Components/float/Float";
+import InlineSlider from "./Components/InlineSlider/InlineSlider";
 
 function App() {
   return (
@@ -13,6 +14,8 @@ function App() {
         <Route path="/wall" element={<Wall />} />
         <Route path="/flash" element={<Flash />} />
         <Route path="/float" element={<Float />} />
+        <Route path="/inlineslider" element={<InlineSlider />} />
+
 
       </Routes>
     </div>
