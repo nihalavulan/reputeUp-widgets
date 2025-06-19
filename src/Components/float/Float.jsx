@@ -325,7 +325,7 @@ const Float = ({ apiId = "1749890233" }) => {
                 <img 
                   src={currentReview.customer_photo || currentReview.author_pic} 
                   alt="" 
-                  style={{ width: 28, height: 28, borderRadius: '50%', objectFit: 'cover', marginLeft: 2 }}
+                  style={{ width: 28, height: 28, borderRadius: '4px', objectFit: 'cover', marginLeft: 2 }}
                 />
               ) : (
                 <div className="avatar-placeholder" style={{ width: 28, height: 28, borderRadius: '50%', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: 'white', fontWeight: 600, fontSize: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 2 }}>
