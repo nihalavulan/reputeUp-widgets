@@ -3,19 +3,19 @@ import {
   FloatWrapper,
   FloatCard,
   FloatContent,
-  FloatHeader,
-  FloatAuthor,
+//   FloatHeader,
+//   FloatAuthor,
   FloatText,
   FloatFooter,
   FloatRating,
-  NavigationButtons,
-  NavButton,
+//   NavigationButtons,
+//   NavButton,
   StyledReviewLinkWrapper,
   NavigationArrowLeft,
   NavigationArrowRight,
   FloatTopRow,
   QuoteIconWrap,
-  ActionIcons
+//   ActionIcons
 } from "./Float.styled";
 import StarIcon from "../../assets/icons/Star";
 import { useReviews } from "../../hooks/useReviews";
@@ -35,12 +35,12 @@ const useIframeResize = () => {
 const QuoteIcon = () => (
     <Icon icon="mingcute:quote-left-fill" width="44" height="44"  style={{color: "#ff8907"}} />
 );
-const PlusIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="#888" strokeWidth="2" strokeLinecap="round"/></svg>
-);
-const MinusIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10h12" stroke="#888" strokeWidth="2" strokeLinecap="round"/></svg>
-);
+// const PlusIcon = () => (
+//   <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="#888" strokeWidth="2" strokeLinecap="round"/></svg>
+// );
+// const MinusIcon = () => (
+//   <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10h12" stroke="#888" strokeWidth="2" strokeLinecap="round"/></svg>
+// );
 
 const Float = ({ apiId = "1749890233" }) => {
   const { reviews, loading, error } = useReviews(apiId);

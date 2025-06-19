@@ -1,26 +1,26 @@
 import styled, { keyframes, css } from "styled-components";
 
-const slideInFromBottom = keyframes`
-  from {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-`;
+// const slideInFromBottom = keyframes`
+//   from {
+//     transform: translateY(100%);
+//     opacity: 0;
+//   }
+//   to {
+//     transform: translateY(0);
+//     opacity: 1;
+//   }
+// `;
 
-const slideOutToBottom = keyframes`
-  from {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-`;
+// const slideOutToBottom = keyframes`
+//   from {
+//     transform: translateY(0);
+//     opacity: 1;
+//   }
+//   to {
+//     transform: translateY(20px);
+//     opacity: 0;
+//   }
+// `;
 
 const fadeIn = keyframes`
   from {
