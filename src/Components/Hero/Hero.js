@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyledHeroMainWrapper, WidgetGrid, WidgetCard, WidgetPreview, WidgetName, WidgetDescription, ViewDetailsButton } from './Hero.styled'
+import { StyledHeroMainWrapper, WidgetGrid, WidgetCard, WidgetName, WidgetDescription, ViewDetailsButton } from './Hero.styled'
 import { useNavigate } from 'react-router-dom';
 import { FaThLarge, FaBolt, FaCommentDots, FaSlidersH, FaListUl } from 'react-icons/fa';
 
