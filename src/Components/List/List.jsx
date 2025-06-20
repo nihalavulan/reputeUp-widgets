@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useReviews } from "../../hooks/useReviews";
 import {
   ListWrapper,
@@ -10,12 +10,38 @@ import {
   ListFooter,
   ListStars,
   ListRightMeta,
-  ListIcon
+  ListIcon,
+  ReadMoreToggle,
+  LoadMoreButton,
+  LoadingWrapper
 } from "./List.styled";
 import StarIcon from "../../assets/icons/Star";
 
+const BATCH_SIZE = 8;
+
 const List = ({ apiId = "1749890233" }) => {
   const { reviews, loading, error } = useReviews(apiId);
+  const [expandedIds, setExpandedIds] = useState([]);
+  const [overflowMap, setOverflowMap] = useState({});
+  const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
+  const textRefs = useRef({});
+
+  const toggleReadMore = (id) => {
+    setExpandedIds((prev) =>
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+    );
+  };
+
+  useEffect(() => {
+    const newOverflowMap = {};
+    Object.keys(textRefs.current).forEach((id) => {
+      const el = textRefs.current[id];
+      if (el && el.scrollHeight > el.clientHeight + 1) {
+        newOverflowMap[id] = true;
+      }
+    });
+    setOverflowMap(newOverflowMap);
+  }, [reviews]);
 
   const renderStars = (rating) => {
     const stars = [];
@@ -25,17 +51,28 @@ const List = ({ apiId = "1749890233" }) => {
     return <ListStars>{stars}</ListStars>;
   };
 
-  if (loading) return <ListWrapper>Loading...</ListWrapper>;
+  if (loading) {
+    return (
+      <LoadingWrapper>
+        <span>Loading reviews...</span>
+      </LoadingWrapper>
+    );
+  }
+
   if (error) return <ListWrapper>Error loading reviews</ListWrapper>;
 
-  // Only show reviews with review_text
   const filteredReviews = (reviews || []).filter(r => r.review_text);
   if (filteredReviews.length === 0) return <ListWrapper>No reviews</ListWrapper>;
 
+  const visibleReviews = filteredReviews.slice(0, visibleCount);
+
   return (
     <ListWrapper>
-      {filteredReviews.map((review) => {
+      {visibleReviews.map((review) => {
+        const isExpanded = expandedIds.includes(review.id);
+        const hasOverflowed = overflowMap[review.id];
         let faviconUrl = "";
+
         try {
           if (review.review_link) {
             faviconUrl = `https://www.google.com/s2/favicons?domain=${new URL(review.review_link).hostname}&sz=64`;
@@ -43,11 +80,22 @@ const List = ({ apiId = "1749890233" }) => {
         } catch {
           faviconUrl = "";
         }
+
         return (
           <ListCard key={review.id}>
             <ListAvatar src={review.customer_photo || review.author_pic} alt="avatar" />
             <ListContent>
-              <ListText>{review.review_text}</ListText>
+              <ListText
+                ref={(el) => (textRefs.current[review.id] = el)}
+                $expanded={isExpanded}
+              >
+                {review.review_text}
+              </ListText>
+              {hasOverflowed && (
+                <ReadMoreToggle onClick={() => toggleReadMore(review.id)}>
+                  {isExpanded ? "Read less" : "Read more"}
+                </ReadMoreToggle>
+              )}
               <ListFooter>
                 <ListName>{review.customer_firstname} {review.customer_lastname}</ListName>
                 <ListRightMeta>
@@ -76,8 +124,14 @@ const List = ({ apiId = "1749890233" }) => {
           </ListCard>
         );
       })}
+
+      {visibleCount < filteredReviews.length && (
+        <LoadMoreButton onClick={() => setVisibleCount(prev => prev + BATCH_SIZE)}>
+          Load More
+        </LoadMoreButton>
+      )}
     </ListWrapper>
   );
 };
 
-export default List; 
+export default List;
