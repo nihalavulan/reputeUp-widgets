@@ -1,0 +1,22 @@
+<script src="https://unpkg.com/iframe-resizer@4.3.1/js/iframeResizer.min.js"></script>
+<iframe id="list-widget" src="http://localhost:3000/list" frameborder="0" scrolling="no"
+    style="border: none; width: 100%; display: block;"></iframe>
+<script>
+  (function () {
+    const iframe = document.getElementById('list-widget');
+
+    function positionIframe() {
+      Object.assign(iframe.style, {
+        position: 'relative',
+        width: '100%',
+        maxWidth: '100%',
+        border: 'none',
+        display: 'block',
+      });
+    }
+
+    positionIframe();
+    iFrameResize({ log: false, checkOrigin: false }, iframe);
+    window.addEventListener('resize', positionIframe);
+  })();
+</script> 

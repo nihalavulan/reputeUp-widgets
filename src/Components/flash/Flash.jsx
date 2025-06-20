@@ -70,7 +70,7 @@ const Flash = ({ apiId = "1749890233" }) => {
   const renderStars = useMemo(
     () => (rating) => {
       const stars = [];
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < rating; i++) {
         stars.push(<StarIcon key={i} />);
       }
       return (
