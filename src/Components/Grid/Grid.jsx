@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import {
   GridWrapper,
   GridCard,
@@ -47,12 +47,21 @@ const Grid = ({ apiId = "1749890233" }) => {
   const { reviews, loading, error } = useReviews(apiId);
   const [modalReview, setModalReview] = useState(null);
   const [displayedCount, setDisplayedCount] = useState(ITEMS_PER_PAGE);
+  const modalRef = useRef(null);
+
+  // Scroll modal into view when opened
+  useEffect(() => {
+    if (modalReview && modalRef.current) {
+      modalRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [modalReview]);
 
   const textReviews = useMemo(() => reviews.filter(r => r.review_text), [reviews]);
   const displayedReviews = useMemo(() => textReviews.slice(0, displayedCount), [textReviews, displayedCount]);
   const hasMore = textReviews.length > displayedCount;
 
-  if (loading || error || textReviews.length === 0) return null;
+  if (loading) return <div style={{ padding: '48px 0', textAlign: 'center', color: '#888', fontSize: '1.1rem' }}>Loading reviews...</div>;
+  if (error || textReviews.length === 0) return null;
 
   return (
     <>
@@ -124,20 +133,20 @@ const Grid = ({ apiId = "1749890233" }) => {
         })}
       </GridWrapper>
       {hasMore && (
-        <div style={{ display: 'flex', justifyContent: 'center', margin: '24px 0' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', padding: '18px 0', marginBottom: 32 }}>
           <button
             onClick={() => setDisplayedCount(c => c + ITEMS_PER_PAGE)}
             style={{
-              background: 'linear-gradient(135deg, #3498db, #2980b9)',
-              color: 'white',
-              border: 'none',
-              borderRadius: 8,
-              padding: '12px 24px',
-              fontSize: '1rem',
+              background: '#f5f6fa',
+              color: '#1976d2',
+              border: '1px solid #e0e0e0',
+              borderRadius: 6,
+              padding: '6px 18px',
+              fontSize: '0.98rem',
               fontWeight: 500,
               cursor: 'pointer',
-              boxShadow: '0 4px 12px rgba(52, 152, 219, 0.3)',
-              transition: 'all 0.3s ease',
+              boxShadow: 'none',
+              transition: 'all 0.2s',
             }}
           >
             Load More
@@ -146,7 +155,7 @@ const Grid = ({ apiId = "1749890233" }) => {
       )}
       {modalReview && (
         <ModalOverlay onClick={() => setModalReview(null)}>
-          <ModalContent onClick={e => e.stopPropagation()}>
+          <ModalContent ref={modalRef} onClick={e => e.stopPropagation()}>
             <CloseButton onClick={() => setModalReview(null)}>&times;</CloseButton>
             <QuoteIconWrap><QuoteIcon /></QuoteIconWrap>
             <div style={{ marginBottom: 12, fontSize: 16, color: '#444', fontWeight: 500 }}>{modalReview.review_text}</div>
