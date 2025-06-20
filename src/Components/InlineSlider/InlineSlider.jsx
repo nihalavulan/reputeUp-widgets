@@ -137,7 +137,7 @@ const InlineSlider = ({ apiId = "1749890233" }) => {
                   />
                 </ReviewLink>
               )}
-              <Avatar src={review.customer_photo} alt="avatar" />
+              <Avatar src={review.author_pic} alt="avatar" />
             </AuthorRow>
           </div>
           <QuoteIconRight icon="mingcute:quote-left-fill" />

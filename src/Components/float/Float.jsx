@@ -323,7 +323,7 @@ const Float = ({ apiId = "1749890233" }) => {
                 </div>
               {currentReview.customer_photo || currentReview.author_pic ? (
                 <img 
-                  src={currentReview.customer_photo || currentReview.author_pic} 
+                  src={ currentReview.author_pic || currentReview.customer_photo} 
                   alt="" 
                   style={{ width: 28, height: 28, borderRadius: '4px', objectFit: 'cover', marginLeft: 2 }}
                 />

@@ -207,7 +207,7 @@ const Flash = ({ apiId = "1749890233" }) => {
             <FlashAuthor>
               {currentReview.customer_photo || currentReview.author_pic ? (
                 <img 
-                  src={currentReview.customer_photo || currentReview.author_pic} 
+                  src={currentReview.author_pic || currentReview.customer_photo } 
                   alt="" 
                 />
               ) : (

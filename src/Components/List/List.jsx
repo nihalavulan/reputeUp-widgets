@@ -83,7 +83,7 @@ const List = ({ apiId = "1749890233" }) => {
 
         return (
           <ListCard key={review.id}>
-            <ListAvatar src={review.customer_photo || review.author_pic} alt="avatar" />
+            <ListAvatar src={review.author_pic || review.customer_photo} alt="avatar" />
             <ListContent>
               <ListText
                 ref={(el) => (textRefs.current[review.id] = el)}

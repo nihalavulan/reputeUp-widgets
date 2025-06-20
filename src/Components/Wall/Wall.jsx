@@ -121,7 +121,7 @@ const ReviewCard = React.memo(({ review, onImageLoad, renderStars }) => {
         <StyledBodyHeadersWrapper>
           <StyledBodyHeader>
             <StyledBodyAuthorDetailsWrapper>
-              <img src={review?.customer_photo || review?.author_pic} alt="" />
+              <img src={review?.author_pic || review?.customer_photo} alt="" />
               <div>
                 <h3>{review.author_name || review.customer_firstname}</h3>
                 <h6>

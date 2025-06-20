@@ -111,7 +111,7 @@ const Grid = ({ apiId = "1749890233" }) => {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                     {review.customer_photo || review.author_pic ? (
                       <img
-                        src={review.customer_photo || review.author_pic}
+                        src={review.author_pic || review.customer_photo}
                         alt=""
                         style={{ width: 28, height: 28, borderRadius: '4px', objectFit: 'cover' }}
                       />
