@@ -120,4 +120,21 @@ export function getListScript() {
   })();
 </script>
 `;
+}
+
+export function getGridScript() {
+  return `
+<script type="text/javascript" src="https://unpkg.com/iframe-resizer@4.3.1/js/iframeResizer.min.js"></script>
+<iframe 
+    id="grid-testimonial-widget" 
+    src="${window.location.origin}/grid" 
+    frameborder="0" 
+    scrolling="no" 
+    width="100%"
+    style="border: none; display: block;">
+</iframe>
+<script type="text/javascript">
+    iFrameResize({ log: false, checkOrigin: false }, "#grid-testimonial-widget");
+</script>
+`;
 } 

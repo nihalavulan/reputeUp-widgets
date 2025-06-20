@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyledHeroMainWrapper, WidgetGrid, WidgetCard, WidgetName, WidgetDescription, ViewDetailsButton } from './Hero.styled'
 import { useNavigate } from 'react-router-dom';
-import { FaThLarge, FaBolt, FaCommentDots, FaSlidersH, FaListUl } from 'react-icons/fa';
+import { FaThLarge, FaBolt, FaCommentDots, FaSlidersH, FaListUl, FaGripHorizontal } from 'react-icons/fa';
 
 const widgets = [
   {
@@ -33,6 +33,12 @@ const widgets = [
     description: 'List view for testimonials.',
     icon: <FaListUl size={40} />,
     route: 'list',
+  },
+  {
+    name: 'Grid',
+    description: 'Grid layout for testimonials.',
+    icon: <FaGripHorizontal size={40} />,
+    route: 'grid',
   },
 ];
 

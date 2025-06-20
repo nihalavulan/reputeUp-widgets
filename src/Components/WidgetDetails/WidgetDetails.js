@@ -30,6 +30,11 @@ const widgetData = {
     description: 'List view for testimonials.',
     getScript: scriptTemplates.getListScript,
   },
+  grid: {
+    name: 'Grid',
+    description: 'Grid layout for testimonials.',
+    getScript: scriptTemplates.getGridScript,
+  },
 };
 
 const WidgetDetails = () => {
