@@ -18,6 +18,8 @@ import { useReviews } from "../../hooks/useReviews";
 import StarIcon from "../../assets/icons/Star";
 import { Icon } from "@iconify/react";
 
+const ITEMS_PER_PAGE = 12;
+
 const QuoteIcon = () => (
   <Icon icon="mingcute:quote-left-fill" width="36" height="36" style={{ color: "#ff8907" }} />
 );
@@ -30,20 +32,35 @@ const renderStars = (rating) => {
   return <CardRating>{stars}</CardRating>;
 };
 
+const getFaviconUrl = (review_link) => {
+  try {
+    if (review_link) {
+      return `https://www.google.com/s2/favicons?domain=${new URL(review_link).hostname}&sz=64`;
+    }
+  } catch {
+    return "";
+  }
+  return "";
+};
+
 const Grid = ({ apiId = "1749890233" }) => {
   const { reviews, loading, error } = useReviews(apiId);
   const [modalReview, setModalReview] = useState(null);
+  const [displayedCount, setDisplayedCount] = useState(ITEMS_PER_PAGE);
 
   const textReviews = useMemo(() => reviews.filter(r => r.review_text), [reviews]);
+  const displayedReviews = useMemo(() => textReviews.slice(0, displayedCount), [textReviews, displayedCount]);
+  const hasMore = textReviews.length > displayedCount;
 
   if (loading || error || textReviews.length === 0) return null;
 
   return (
     <>
       <GridWrapper>
-        {textReviews.map((review, idx) => {
+        {displayedReviews.map((review, idx) => {
           const isLong = review.review_text.length > 180;
           const displayText = isLong ? review.review_text.slice(0, 180) + "... " : review.review_text;
+          const faviconUrl = getFaviconUrl(review.review_link);
           return (
             <GridCard key={review.id || idx}>
               <CardContentRow>
@@ -56,6 +73,17 @@ const Grid = ({ apiId = "1749890233" }) => {
                 </CardText>
               </CardContentRow>
               <CardFooter>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 4, flex: 1 }}>
+                  {faviconUrl && (
+                    <a href={review.review_link} target="_blank" rel="noopener noreferrer">
+                      <img
+                        src={faviconUrl}
+                        alt="favicon"
+                        style={{ width: 16, height: 16, borderRadius: 4, objectFit: "cover", marginRight: 2 }}
+                      />
+                    </a>
+                  )}
+                </div>
                 {renderStars(review.rating)}
                 <CardAuthor>
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '2px' }}>
@@ -71,7 +99,7 @@ const Grid = ({ apiId = "1749890233" }) => {
                       })}
                     </GridReviewDate>
                   </div>
-                  <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                     {review.customer_photo || review.author_pic ? (
                       <img
                         src={review.customer_photo || review.author_pic}
@@ -95,6 +123,27 @@ const Grid = ({ apiId = "1749890233" }) => {
           );
         })}
       </GridWrapper>
+      {hasMore && (
+        <div style={{ display: 'flex', justifyContent: 'center', margin: '24px 0' }}>
+          <button
+            onClick={() => setDisplayedCount(c => c + ITEMS_PER_PAGE)}
+            style={{
+              background: 'linear-gradient(135deg, #3498db, #2980b9)',
+              color: 'white',
+              border: 'none',
+              borderRadius: 8,
+              padding: '12px 24px',
+              fontSize: '1rem',
+              fontWeight: 500,
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(52, 152, 219, 0.3)',
+              transition: 'all 0.3s ease',
+            }}
+          >
+            Load More
+          </button>
+        </div>
+      )}
       {modalReview && (
         <ModalOverlay onClick={() => setModalReview(null)}>
           <ModalContent onClick={e => e.stopPropagation()}>
@@ -102,37 +151,50 @@ const Grid = ({ apiId = "1749890233" }) => {
             <QuoteIconWrap><QuoteIcon /></QuoteIconWrap>
             <div style={{ marginBottom: 12, fontSize: 16, color: '#444', fontWeight: 500 }}>{modalReview.review_text}</div>
             <CardFooter>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4, flex: 1 }}>
+                {getFaviconUrl(modalReview.review_link) && (
+                  <a href={modalReview.review_link} target="_blank" rel="noopener noreferrer">
+                    <img
+                      src={getFaviconUrl(modalReview.review_link)}
+                      alt="favicon"
+                      style={{ width: 16, height: 16, borderRadius: 4, objectFit: "cover", marginRight: 2 }}
+                    />
+                  </a>
+                )}
+              </div>
               {renderStars(modalReview.rating)}
               <CardAuthor>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '2px' }}>
-                <span style={{ fontWeight: 700, fontSize: 15, color: '#222' }}>
-                  {modalReview.customer_firstname}
-                  {modalReview.customer_lastname ? ` ${modalReview.customer_lastname[0]}.` : ''}
-                </span>
-                <GridReviewDate>
-                  {modalReview.review_date && new Date(modalReview.review_date).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </GridReviewDate>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '2px' }}>
+                  <span style={{ fontWeight: 700, fontSize: 13, color: '#222' }}>
+                    {modalReview.customer_firstname}
+                    {modalReview.customer_lastname ? ` ${modalReview.customer_lastname[0]}.` : ''}
+                  </span>
+                  <GridReviewDate>
+                    {modalReview.review_date && new Date(modalReview.review_date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </GridReviewDate>
                 </div>
-                {modalReview.customer_photo || modalReview.author_pic ? (
-                  <img
-                    src={modalReview.customer_photo || modalReview.author_pic}
-                    alt=""
-                    style={{ width: 28, height: 28, borderRadius: '4px', objectFit: 'cover' }}
-                  />
-                ) : (
-                  <div style={{
-                    width: 28, height: 28, borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    color: 'white', fontWeight: 600, fontSize: 12,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center'
-                  }}>
-                    {(modalReview.customer_firstname || modalReview.author_name || 'A').charAt(0)}
-                  </div>
-                )}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                  {modalReview.customer_photo || modalReview.author_pic ? (
+                    <img
+                      src={modalReview.customer_photo || modalReview.author_pic}
+                      alt=""
+                      style={{ width: 28, height: 28, borderRadius: '4px', objectFit: 'cover' }}
+                    />
+                  ) : (
+                    <div style={{
+                      width: 28, height: 28, borderRadius: '50%',
+                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                      color: 'white', fontWeight: 600, fontSize: 12,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center'
+                    }}>
+                      {(modalReview.customer_firstname || modalReview.author_name || 'A').charAt(0)}
+                    </div>
+                  )}
+                </div>
               </CardAuthor>
             </CardFooter>
           </ModalContent>

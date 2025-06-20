@@ -128,15 +128,15 @@ const InlineSlider = ({ apiId = "1749890233" }) => {
               <AuthorName>
                 {review.customer_firstname} {review.customer_lastname}
               </AuthorName>
-              <ReviewLink href={review.review_link} target="_blank">
-                {faviconUrl && (
+              {faviconUrl && (
+                <ReviewLink href={review.review_link} target="_blank" rel="noopener noreferrer">
                   <img
                     src={faviconUrl}
                     alt="favicon"
-                    style={{ width: 16, height: 16, borderRadius: 4, objectFit: "cover" }}
+                    style={{ width: 16, height: 16, borderRadius: 4, objectFit: "cover", marginLeft: 4 }}
                   />
-                )}
-              </ReviewLink>
+                </ReviewLink>
+              )}
               <Avatar src={review.customer_photo} alt="avatar" />
             </AuthorRow>
           </div>
