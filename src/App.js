@@ -6,6 +6,7 @@ import Flash from "./Components/flash/Flash";
 import Float from "./Components/float/Float";
 import InlineSlider from "./Components/InlineSlider/InlineSlider";
 import List from "./Components/List/List";
+import WidgetDetails from "./Components/WidgetDetails/WidgetDetails";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/float" element={<Float />} />
         <Route path="/inlineslider" element={<InlineSlider />} />
         <Route path="/list" element={<List />} />
+        <Route path="/widget-details/:widgetName" element={<WidgetDetails />} />
       </Routes>
     </div>
   );
