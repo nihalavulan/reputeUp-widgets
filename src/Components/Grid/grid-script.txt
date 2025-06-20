@@ -1,0 +1,25 @@
+<script src="https://unpkg.com/iframe-resizer@4.3.1/js/iframeResizer.min.js"></script>
+<iframe id="grid-testimonial-widget" src="http://localhost:3000/grid" frameborder="0" scrolling="no" width="1"
+    height="1" style="border: none;"></iframe>
+<script>
+    (function () {
+        const iframe = document.getElementById('grid-testimonial-widget');
+
+        function positionIframe() {
+            const isMobile = window.innerWidth <= 768;
+            Object.assign(iframe.style, {
+                position: 'fixed',
+                bottom: '20px',
+                right: isMobile ? '10px' : '20px',
+                zIndex: '9999',
+                border: 'none',
+                width: isMobile ? '95vw' : '900px',
+                maxWidth: 'calc(100vw - 40px)'
+            });
+        }
+
+        positionIframe();
+        iFrameResize({ log: false, checkOrigin: false }, iframe);
+        window.addEventListener('resize', positionIframe);
+    })();
+</script> 
