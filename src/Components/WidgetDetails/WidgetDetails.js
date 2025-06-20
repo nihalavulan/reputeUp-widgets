@@ -58,8 +58,7 @@ const WidgetDetails = () => {
       <WidgetHeader>{widget.name}</WidgetHeader>
       <p>{widget.description}</p>
       <WidgetPreviewSection>
-        {/* Widget preview placeholder */}
-        <div style={{height: 180, background: '#f8fafc', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#aaa'}}>Widget Preview</div>
+        {/* No preview button here */}
       </WidgetPreviewSection>
       <WidgetCodeSection>
         <h3>Embed Code</h3>
@@ -79,6 +78,26 @@ const WidgetDetails = () => {
         <h3>Installation</h3>
         <p>Copy and paste the above script into your website's HTML where you want the widget to appear.</p>
       </WidgetInstallSection>
+      <button
+        style={{
+          marginTop: 28,
+          alignSelf: 'center',
+          height: 48,
+          minWidth: 160,
+          background: '#fff',
+          color: '#ff6f91',
+          border: '2px solid #ff6f91',
+          borderRadius: 8,
+          fontSize: '1.1rem',
+          fontWeight: 600,
+          cursor: 'pointer',
+          boxShadow: '0 2px 8px rgba(255,111,145,0.08)',
+          transition: 'background 0.18s, color 0.18s, border 0.18s',
+        }}
+        onClick={() => window.open(`/${widgetName}`, '_blank')}
+      >
+        Live Preview
+      </button>
     </WidgetDetailsWrapper>
   );
 };
