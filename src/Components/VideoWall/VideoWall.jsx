@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import React, { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import { useSwipeable } from "react-swipeable";
 import {
   VideoWallWrapper,
@@ -161,8 +161,15 @@ const VideoWall = () => {
   const CARD_WIDTH = 330; // 300px + 30px margin
   const ORIGINAL_SET_WIDTH = mockData.length * CARD_WIDTH;
 
+  const stopAutoScroll = useCallback(() => {
+    if (autoScrollRef.current) {
+      clearInterval(autoScrollRef.current);
+      autoScrollRef.current = null;
+    }
+  }, []);
+
   // Auto scroll function
-  const startAutoScroll = () => {
+  const startAutoScroll = useCallback(() => {
     if (autoScrollRef.current) return;
     
     autoScrollRef.current = setInterval(() => {
@@ -179,20 +186,13 @@ const VideoWall = () => {
         });
       }
     }, 16); // ~60fps
-  };
-
-  const stopAutoScroll = () => {
-    if (autoScrollRef.current) {
-      clearInterval(autoScrollRef.current);
-      autoScrollRef.current = null;
-    }
-  };
+  }, [ORIGINAL_SET_WIDTH]);
 
   // Initialize auto scroll
   useEffect(() => {
     startAutoScroll();
     return () => stopAutoScroll();
-  }, []);
+  }, [startAutoScroll, stopAutoScroll]);
 
   // Handle mouse enter/leave
   const handleMouseEnter = () => {
