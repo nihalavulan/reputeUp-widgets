@@ -10,10 +10,11 @@ import WidgetDetails from "./Components/WidgetDetails/WidgetDetails";
 import Grid from "./Components/Grid";
 import ReviewBlock from "./Components/ReviewBlock/ReviewBlock";
 import VideoWall from "./Components/VideoWall/VideoWall";
+import Photoset from './Components/Photoset/Photoset';
 
 function App() {
   return (
-    <div>
+    <div className="App">
       <Routes>
         <Route path="/" element={<Hero />} />
         <Route path="/wall" element={<Wall />} />
@@ -24,6 +25,7 @@ function App() {
         <Route path="/grid" element={<Grid />} />
         <Route path="/reviewblock" element={<ReviewBlock />} />
         <Route path="/videowall" element={<VideoWall />} />
+        <Route path="/photoset" element={<Photoset />} />
         
         <Route path="/widget-details/:widgetName" element={<WidgetDetails />} />
       </Routes>

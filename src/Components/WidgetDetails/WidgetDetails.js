@@ -45,6 +45,11 @@ const widgetData = {
     description: 'A wall of videos that auto-scrolls.',
     getScript: scriptTemplates.getVideoWallScript,
   },
+  photoset: {
+    name: 'Photoset',
+    description: 'A review slider with a photo gallery.',
+    getScript: scriptTemplates.getPhotosetScript,
+  },
 };
 
 const WidgetDetails = () => {
