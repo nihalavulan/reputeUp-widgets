@@ -40,6 +40,11 @@ const widgetData = {
     description: 'A block to show average review rating.',
     getScript: scriptTemplates.getReviewBlockScript,
   },
+  videowall: {
+    name: 'VideoWall',
+    description: 'A wall of videos that auto-scrolls.',
+    getScript: scriptTemplates.getVideoWallScript,
+  },
 };
 
 const WidgetDetails = () => {

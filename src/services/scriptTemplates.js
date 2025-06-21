@@ -154,4 +154,28 @@ export function getReviewBlockScript() {
     iFrameResize({ log: false, checkOrigin: false }, "#review-block-widget");
 </script>
 `;
+}
+
+export function getVideoWallScript() {
+  return `
+<script src="https://unpkg.com/iframe-resizer@4.3.1/js/iframeResizer.min.js"></script>
+<iframe id="video-wall-widget" src="${window.location.origin}/videowall" frameborder="0" scrolling="no" style="border: none; width: 100%; display: block;"></iframe>
+<script>
+  (function () {
+    const iframe = document.getElementById('video-wall-widget');
+    function positionIframe() {
+      Object.assign(iframe.style, {
+        position: 'relative',
+        width: '100%',
+        maxWidth: '100%',
+        border: 'none',
+        display: 'block',
+      });
+    }
+    positionIframe();
+    iFrameResize({ log: false, checkOrigin: false }, iframe);
+    window.addEventListener('resize', positionIframe);
+  })();
+</script>
+`;
 } 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyledHeroMainWrapper, WidgetGrid, WidgetCard, WidgetName, WidgetDescription, ViewDetailsButton } from './Hero.styled'
 import { useNavigate } from 'react-router-dom';
-import { FaThLarge, FaBolt, FaCommentDots, FaSlidersH, FaListUl, FaGripHorizontal, FaStar } from 'react-icons/fa';
+import { FaThLarge, FaBolt, FaCommentDots, FaSlidersH, FaListUl, FaGripHorizontal, FaStar, FaVideo } from 'react-icons/fa';
 
 const widgets = [
   {
@@ -45,6 +45,12 @@ const widgets = [
     description: 'A block to show average review rating.',
     icon: <FaStar size={40} />,
     route: 'reviewblock',
+  },
+  {
+    name: 'VideoWall',
+    description: 'A wall of videos that auto-scrolls.',
+    icon: <FaVideo size={40} />,
+    route: 'videowall',
   },
 ];
 
