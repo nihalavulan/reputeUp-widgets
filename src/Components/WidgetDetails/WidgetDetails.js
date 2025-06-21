@@ -35,6 +35,11 @@ const widgetData = {
     description: 'Grid layout for testimonials.',
     getScript: scriptTemplates.getGridScript,
   },
+  reviewblock: {
+    name: 'ReviewBlock',
+    description: 'A block to show average review rating.',
+    getScript: scriptTemplates.getReviewBlockScript,
+  },
 };
 
 const WidgetDetails = () => {

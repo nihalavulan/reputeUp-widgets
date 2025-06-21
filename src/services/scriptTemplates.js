@@ -137,4 +137,21 @@ export function getGridScript() {
     iFrameResize({ log: false, checkOrigin: false }, "#grid-testimonial-widget");
 </script>
 `;
+}
+
+export function getReviewBlockScript() {
+  return `
+<script type="text/javascript" src="https://unpkg.com/iframe-resizer@4.3.1/js/iframeResizer.min.js"></script>
+<iframe
+    id="review-block-widget"
+    src="${window.location.origin}/reviewblock"
+    frameborder="0"
+    scrolling="no"
+    width="100%"
+    style="border: none; display: block; max-width: 350px;">
+</iframe>
+<script type="text/javascript">
+    iFrameResize({ log: false, checkOrigin: false }, "#review-block-widget");
+</script>
+`;
 } 

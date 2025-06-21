@@ -8,6 +8,7 @@ import InlineSlider from "./Components/InlineSlider/InlineSlider";
 import List from "./Components/List/List";
 import WidgetDetails from "./Components/WidgetDetails/WidgetDetails";
 import Grid from "./Components/Grid";
+import ReviewBlock from "./Components/ReviewBlock/ReviewBlock";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/inlineslider" element={<InlineSlider />} />
         <Route path="/list" element={<List />} />
         <Route path="/grid" element={<Grid />} />
+        <Route path="/reviewblock" element={<ReviewBlock />} />
         
         <Route path="/widget-details/:widgetName" element={<WidgetDetails />} />
       </Routes>
