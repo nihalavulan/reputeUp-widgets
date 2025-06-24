@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useReviews } from "../../hooks/useReviews";
-// import styled components (to be created in CardDeck.styled.js)
+
 import {
   CardDeckWrapper,
   CardDeckContainer,
@@ -14,19 +14,19 @@ import {
 
 const CardDeck = ({ apiId = "1749890233" }) => {
   const { reviews, loading, error } = useReviews(apiId);
-  // Only consider reviews with review_title or review_text
+
   const reviewsWithText = reviews
     ? reviews.filter(
         (r) => (r.review_title && r.review_title.trim() !== "") || (r.review_text && r.review_text.trim() !== "")
       )
     : [];
 
-  // Prepare 9 cards: 4 left, 1 center, 4 right
+
   const [leftCards, setLeftCards] = useState([0, 1, 2, 3]);
   const [rightCards, setRightCards] = useState([4, 5, 6, 7]);
   const [centerCard, setCenterCard] = useState(8);
 
-  // Simple swap logic: interchange clicked card with center card
+
   const handleCardClick = (side, idx) => {
     if (side === "left") {
       const clickedCardIndex = leftCards[idx];
@@ -50,7 +50,7 @@ const CardDeck = ({ apiId = "1749890233" }) => {
   return (
     <CardDeckWrapper>
       <CardDeckContainer>
-        {/* Left cards - arranged in a fan behind center */}
+
         {leftCards.map((idx, i) => (
           <CardDeckCard 
             key={`left-${idx}`} 
@@ -66,7 +66,7 @@ const CardDeck = ({ apiId = "1749890233" }) => {
           </CardDeckCard>
         ))}
         
-        {/* Right cards - arranged in a fan behind center */}
+
         {rightCards.map((idx, i) => (
           <CardDeckCard 
             key={`right-${idx}`} 
@@ -82,7 +82,7 @@ const CardDeck = ({ apiId = "1749890233" }) => {
           </CardDeckCard>
         ))}
         
-        {/* Center card - on top */}
+
         <CardDeckCard position="center">
           <CardDeckReviewText>{reviewsWithText[centerCard].review_text || reviewsWithText[centerCard].review_title}</CardDeckReviewText>
           <CardDeckAuthorInfo>
