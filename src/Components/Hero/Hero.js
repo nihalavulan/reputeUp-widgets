@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyledHeroMainWrapper, WidgetGrid, WidgetCard, WidgetName, WidgetDescription, ViewDetailsButton } from './Hero.styled'
 import { useNavigate } from 'react-router-dom';
-import { FaThLarge, FaBolt, FaCommentDots, FaSlidersH, FaListUl, FaGripHorizontal, FaStar, FaVideo, FaImages } from 'react-icons/fa';
+import { FaThLarge, FaBolt, FaCommentDots, FaSlidersH, FaListUl, FaGripHorizontal, FaStar, FaVideo, FaImages, FaClone } from 'react-icons/fa';
 
 const widgets = [
   {
@@ -63,6 +63,12 @@ const widgets = [
     description: 'A modern review panel with source tabs and overall rating.',
     icon: <FaStar size={40} />,
     route: 'proofpanel',
+  },
+  {
+    name: 'CardDeck',
+    description: 'A deck of testimonial cards with interactive swapping.',
+    icon: <FaClone size={40} />,
+    route: 'carddeck',
   },
 ];
 

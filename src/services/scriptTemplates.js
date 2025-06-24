@@ -220,3 +220,20 @@ export function getProofPanelScript() {
 </script>
 `;
 }
+
+export function getCardDeckScript() {
+  return `
+<script type="text/javascript" src="https://unpkg.com/iframe-resizer@4.3.1/js/iframeResizer.min.js"></script>
+<iframe 
+    id="carddeck-widget" 
+    src="${window.location.origin}/carddeck" 
+    frameborder="0" 
+    scrolling="no" 
+    width="100%"
+    style="border: none; display: block;">
+</iframe>
+<script type="text/javascript">
+    iFrameResize({ log: false, checkOrigin: false }, "#carddeck-widget");
+</script>
+`;
+}

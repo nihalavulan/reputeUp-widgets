@@ -12,6 +12,7 @@ import ReviewBlock from "./Components/ReviewBlock/ReviewBlock";
 import VideoWall from "./Components/VideoWall/VideoWall";
 import Photoset from './Components/Photoset/Photoset';
 import ProofPanel from './Components/ProofPanel/ProofPanel';
+import CardDeck from "./Components/CardDeck";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/videowall" element={<VideoWall />} />
         <Route path="/photoset" element={<Photoset />} />
         <Route path="/proofpanel" element={<ProofPanel />} />
+        <Route path="/carddeck" element={<CardDeck />} />
         
         <Route path="/widget-details/:widgetName" element={<WidgetDetails />} />
       </Routes>

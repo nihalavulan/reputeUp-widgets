@@ -55,6 +55,11 @@ const widgetData = {
     description: 'A modern review panel with source tabs and overall rating.',
     getScript: scriptTemplates.getProofPanelScript,
   },
+  carddeck: {
+    name: 'CardDeck',
+    description: 'A deck of testimonial cards with interactive swapping.',
+    getScript: scriptTemplates.getCardDeckScript,
+  },
 };
 
 const WidgetDetails = () => {
