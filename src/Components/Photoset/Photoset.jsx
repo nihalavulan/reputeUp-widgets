@@ -18,11 +18,14 @@ import {
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useReviews } from "../../hooks/useReviews";
 
-const getReviewPhoto = (review, index) => {
+const getReviewPhotos = (review, index) => {
   if (review.photos && review.photos.length > 0) {
-    return review.photos[0];
+    return review.photos;
   }
-  return `https://picsum.photos/id/${1015 + index}/200/200`;
+  // Generate 5 placeholder images for each review
+  return Array.from({ length: 5 }, (_, i) => 
+    `https://picsum.photos/seed/${index}-${i}/200/300`
+  );
 };
 
 const Photoset = ({ apiId = "1749890233" }) => {
@@ -37,17 +40,29 @@ const Photoset = ({ apiId = "1749890233" }) => {
   const textRef = useRef(null);
   const [isTruncated, setIsTruncated] = useState(false);
   const [modalImage, setModalImage] = useState(null);
+  const [imageLoading, setImageLoading] = useState(false);
 
   const handlePrev = useCallback(() => {
-    setCurrent((prev) => (prev === 0 ? displayableReviews.length - 1 : prev - 1));
+    if (displayableReviews.length <= 1) return;
+    setCurrent((prev) => prev === 0 ? displayableReviews.length - 1 : prev - 1);
   }, [displayableReviews.length]);
 
   const handleNext = useCallback(() => {
+    if (displayableReviews.length <= 1) return;
     setCurrent((prev) => (prev + 1) % displayableReviews.length);
   }, [displayableReviews.length]);
 
   const handleThumbnailClick = (imageUrl) => {
+    setImageLoading(true);
     setModalImage(imageUrl);
+  };
+
+  const handleImageLoad = () => {
+    setImageLoading(false);
+  };
+
+  const handleImageError = () => {
+    setImageLoading(false);
   };
   
   const review = displayableReviews[current];
@@ -74,17 +89,25 @@ const Photoset = ({ apiId = "1749890233" }) => {
       }
   }
 
+  const currentReviewPhotos = getReviewPhotos(review, current);
+
   return (
     <Wrapper>
       <Card>
         <ReviewContainer>
-          <ArrowLeft onClick={handlePrev} disabled={displayableReviews.length <= 1}>
+          <ArrowLeft 
+            onClick={handlePrev} 
+            disabled={displayableReviews.length <= 1}
+            style={{ 
+              opacity: displayableReviews.length <= 1 ? 0.3 : 1,
+              cursor: displayableReviews.length <= 1 ? 'default' : 'pointer'
+            }}
+          >
             <Icon icon="ic:round-chevron-left" width={32} height={32} />
           </ArrowLeft>
           
           <TextAreaContainer>
             <QuoteIcon icon="mingcute:quote-left-fill" />
-            {/* <ReviewTitle>{review.review_title || 'Fun way to see the city'}</ReviewTitle> */}
             <ReviewText
               ref={textRef}
               style={expanded ? {
@@ -95,8 +118,6 @@ const Photoset = ({ apiId = "1749890233" }) => {
               {review.review_text}
             </ReviewText>
             
-            {/* {!expanded && isTruncated && <FadeOverlay />} */}
-
             {isTruncated && (
               <button
                 onClick={() => setExpanded(!expanded)}
@@ -128,21 +149,27 @@ const Photoset = ({ apiId = "1749890233" }) => {
               )}
             </AuthorRow>
             <QuoteIconRight icon="mingcute:quote-left-fill" />
-            </TextAreaContainer>
+          </TextAreaContainer>
 
-          <ArrowRight onClick={handleNext} disabled={displayableReviews.length <= 1}>
+          <ArrowRight 
+            onClick={handleNext} 
+            disabled={displayableReviews.length <= 1}
+            style={{ 
+              opacity: displayableReviews.length <= 1 ? 0.3 : 1,
+              cursor: displayableReviews.length <= 1 ? 'default' : 'pointer'
+            }}
+          >
             <Icon icon="ic:round-chevron-right" width={32} height={32} />
           </ArrowRight>
         </ReviewContainer>
 
         <PhotoGrid>
-          {displayableReviews.map((r, index) => (
+          {currentReviewPhotos.map((photo, index) => (
             <PhotoThumbnail
-              key={r.id || index}
-              src={getReviewPhoto(r, index)}
+              key={`${current}-${index}`}
+              src={photo}
               alt={`Review photo ${index + 1}`}
-            //   className={index === current ? "active" : ""}
-              onClick={() => handleThumbnailClick(getReviewPhoto(r, index))}
+              onClick={() => handleThumbnailClick(photo)}
             />
           ))}
         </PhotoGrid>
@@ -150,20 +177,121 @@ const Photoset = ({ apiId = "1749890233" }) => {
 
       {modalImage && (
         <div 
-          style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.8)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}
-          onClick={() => setModalImage(null)}
+          style={{ 
+            position: 'fixed', 
+            top: 0, 
+            left: 0, 
+            width: '100vw', 
+            height: '100vh', 
+            background: 'rgba(0,0,0,0.9)', 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            zIndex: 999999,
+            padding: '20px',
+            boxSizing: 'border-box'
+          }}
+          onClick={() => {
+            setModalImage(null);
+            setImageLoading(false);
+          }}
         >
-          <div style={{ position: 'relative' }} onClick={(e) => e.stopPropagation()}>
+          <div 
+            style={{ 
+              position: 'relative', 
+              display: 'flex', 
+              justifyContent: 'center', 
+              alignItems: 'center',
+              width: '100%',
+              height: '100%'
+            }} 
+            onClick={(e) => e.stopPropagation()}
+          >
             <button 
-              style={{ position: 'absolute', top: '-40px', right: 0, background: 'transparent', border: 'none', color: 'white', fontSize: '32px', cursor: 'pointer', lineHeight: 1 }}
-              onClick={() => setModalImage(null)}
-            >&times;</button>
-            <img src={modalImage} alt="Enlarged review" style={{ maxWidth: '95vw', maxHeight: '95vh', borderRadius: '8px' }} />
+              style={{ 
+                position: 'absolute', 
+                top: '10px', 
+                right: '10px', 
+                background: 'rgba(0,0,0,0.7)', 
+                border: 'none', 
+                color: 'white', 
+                fontSize: '24px', 
+                cursor: 'pointer', 
+                lineHeight: 1, 
+                borderRadius: '50%', 
+                width: '40px', 
+                height: '40px', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                zIndex: 1000000,
+                fontWeight: 'bold'
+              }}
+              onClick={() => {
+                setModalImage(null);
+                setImageLoading(false);
+              }}
+            >
+              ×
+            </button>
+            
+            {imageLoading && (
+              <div 
+                style={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  color: 'white',
+                  fontSize: '16px',
+                  zIndex: 1000001
+                }}
+              >
+                <div 
+                  style={{
+                    border: '3px solid rgba(255,255,255,0.3)',
+                    borderTop: '3px solid white',
+                    borderRadius: '50%',
+                    width: '40px',
+                    height: '40px',
+                    animation: 'spin 1s linear infinite',
+                    margin: '0 auto 10px'
+                  }}
+                />
+                <div>Loading...</div>
+              </div>
+            )}
+            
+            <img 
+              src={modalImage} 
+              alt="Enlarged review" 
+              onLoad={handleImageLoad}
+              onError={handleImageError}
+              style={{ 
+                maxWidth: '100%', 
+                maxHeight: '100%', 
+                width: 'auto',
+                height: 'auto',
+                borderRadius: '8px', 
+                boxShadow: '0 4px 20px rgba(0,0,0,0.5)', 
+                objectFit: 'contain',
+                display: imageLoading ? 'none' : 'block'
+              }} 
+            />
           </div>
+          
+          <style>
+            {`
+              @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+              }
+            `}
+          </style>
         </div>
       )}
     </Wrapper>
   );
 };
 
-export default Photoset; 
+export default Photoset;
