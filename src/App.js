@@ -11,6 +11,7 @@ import Grid from "./Components/Grid";
 import ReviewBlock from "./Components/ReviewBlock/ReviewBlock";
 import VideoWall from "./Components/VideoWall/VideoWall";
 import Photoset from './Components/Photoset/Photoset';
+import ProofPanel from './Components/ProofPanel/ProofPanel';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/reviewblock" element={<ReviewBlock />} />
         <Route path="/videowall" element={<VideoWall />} />
         <Route path="/photoset" element={<Photoset />} />
+        <Route path="/proofpanel" element={<ProofPanel />} />
         
         <Route path="/widget-details/:widgetName" element={<WidgetDetails />} />
       </Routes>

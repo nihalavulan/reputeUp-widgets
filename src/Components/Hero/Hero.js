@@ -58,6 +58,12 @@ const widgets = [
     icon: <FaImages size={40} />,
     route: 'photoset',
   },
+  {
+    name: 'ProofPanel',
+    description: 'A modern review panel with source tabs and overall rating.',
+    icon: <FaStar size={40} />,
+    route: 'proofpanel',
+  },
 ];
 
 const Hero = () => {

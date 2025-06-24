@@ -50,6 +50,11 @@ const widgetData = {
     description: 'A review slider with a photo gallery.',
     getScript: scriptTemplates.getPhotosetScript,
   },
+  proofpanel: {
+    name: 'ProofPanel',
+    description: 'A modern review panel with source tabs and overall rating.',
+    getScript: scriptTemplates.getProofPanelScript,
+  },
 };
 
 const WidgetDetails = () => {
