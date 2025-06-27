@@ -237,3 +237,20 @@ export function getCardDeckScript() {
 </script>
 `;
 }
+
+export function getAnimatedWallScript() {
+  return `
+<script type="text/javascript" src="https://unpkg.com/iframe-resizer@4.3.1/js/iframeResizer.min.js"></script>
+<iframe 
+    id="animatedwall-widget" 
+    src="${window.location.origin}/animatedwall" 
+    frameborder="0" 
+    scrolling="no" 
+    width="100%"
+    style="border: none; display: block;">
+</iframe>
+<script type="text/javascript">
+    iFrameResize({ log: false, checkOrigin: false }, "#animatedwall-widget");
+</script>
+`;
+}

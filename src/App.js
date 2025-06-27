@@ -13,6 +13,7 @@ import VideoWall from "./Components/VideoWall/VideoWall";
 import Photoset from './Components/Photoset/Photoset';
 import ProofPanel from './Components/ProofPanel/ProofPanel';
 import CardDeck from "./Components/CardDeck";
+import AnimatedWall from "./Components/AnimatedWall/AnimatedWall";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
         <Route path="/photoset" element={<Photoset />} />
         <Route path="/proofpanel" element={<ProofPanel />} />
         <Route path="/carddeck" element={<CardDeck />} />
+        <Route path="/animatedwall" element={<AnimatedWall />} />
         
         <Route path="/widget-details/:widgetName" element={<WidgetDetails />} />
       </Routes>

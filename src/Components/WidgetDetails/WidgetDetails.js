@@ -60,6 +60,11 @@ const widgetData = {
     description: 'A deck of testimonial cards with interactive swapping.',
     getScript: scriptTemplates.getCardDeckScript,
   },
+  animatedwall: {
+    name: 'AnimatedWall',
+    description: 'A visually animated testimonial wall.',
+    getScript: scriptTemplates.getAnimatedWallScript,
+  },
 };
 
 const WidgetDetails = () => {
