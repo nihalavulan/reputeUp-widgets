@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import {
   FlashWrapper,
@@ -13,7 +15,6 @@ import {
   StyledReviewLinkWrapper
 } from "./Flash.styled";
 import StarIcon from "../../assets/icons/Star";
-import { useReviews } from "../../hooks/useReviews";
 
 const useIframeResize = () => {
   const triggerResize = useCallback(() => {
@@ -25,8 +26,7 @@ const useIframeResize = () => {
   return triggerResize;
 };
 
-const Flash = ({ apiId = "1749890233" }) => {
-  const { reviews, loading, error } = useReviews(apiId);
+const Flash = ({ reviews = [] }) => {
   const triggerResize = useIframeResize();
   
   // Get URL parameters
@@ -182,12 +182,8 @@ const Flash = ({ apiId = "1749890233" }) => {
     };
   }, [side]);
 
-  if (loading || textReviews.length === 0) {
-    return null; // Don't show anything while loading or if no text reviews
-  }
-
-  if (error) {
-    return null; // Silently fail for widget
+  if (textReviews.length === 0) {
+    return null; // Don't show anything if no text reviews
   }
 
   const currentReview = textReviews[currentIndex];

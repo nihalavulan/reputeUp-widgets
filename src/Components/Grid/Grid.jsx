@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import {
   GridWrapper,
@@ -14,7 +15,6 @@ import {
   QuoteIconWrap,
   GridReviewDate,
 } from "./Grid.styled";
-import { useReviews } from "../../hooks/useReviews";
 import StarIcon from "../../assets/icons/Star";
 import { Icon } from "@iconify/react";
 
@@ -43,8 +43,7 @@ const getFaviconUrl = (review_link) => {
   return "";
 };
 
-const Grid = ({ apiId = "1749890233" }) => {
-  const { reviews, loading, error } = useReviews(apiId);
+const Grid = ({ apiId = "1749890233", reviews }) => {
   const [modalReview, setModalReview] = useState(null);
   const [displayedCount, setDisplayedCount] = useState(ITEMS_PER_PAGE);
   const modalRef = useRef(null);
@@ -59,9 +58,6 @@ const Grid = ({ apiId = "1749890233" }) => {
   const textReviews = useMemo(() => reviews.filter(r => r.review_text), [reviews]);
   const displayedReviews = useMemo(() => textReviews.slice(0, displayedCount), [textReviews, displayedCount]);
   const hasMore = textReviews.length > displayedCount;
-
-  if (loading) return <div style={{ padding: '48px 0', textAlign: 'center', color: '#888', fontSize: '1.1rem' }}>Loading reviews...</div>;
-  if (error || textReviews.length === 0) return null;
 
   return (
     <>

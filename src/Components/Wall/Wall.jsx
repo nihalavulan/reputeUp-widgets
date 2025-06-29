@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import Masonry from "react-masonry-css";
 import {
@@ -31,7 +33,6 @@ import {
 import { Icon } from "@iconify/react";
 import StarIcon from "../../assets/icons/Star";
 import { LoadMoreButton } from "./Wall.styles";
-import { useReviews } from "../../hooks/useReviews";
 
 const useIframeResize = () => {
   const triggerResize = useCallback(() => {
@@ -173,8 +174,7 @@ const ReviewCard = React.memo(({ review, onImageLoad, renderStars }) => {
 
 ReviewCard.displayName = "ReviewCard";
 
-const Wall = ({ apiId = "1749890233" }) => {
-  const { reviews, loading, error } = useReviews(apiId);
+const Wall = ({ reviews = [] }) => {
   const triggerResize = useIframeResize();
   
   // Pagination state
@@ -192,7 +192,6 @@ const Wall = ({ apiId = "1749890233" }) => {
 
   const renderStars = useMemo(
     () => (rating) => {
-      // const validRating = Math.max(0, Math.min(5, Math.floor(rating || 0)));
       const stars = [];
 
       for (let i = 0; i < rating; i++) {
@@ -236,38 +235,13 @@ const Wall = ({ apiId = "1749890233" }) => {
     setDisplayedCount(ITEMS_PER_PAGE);
   }, [reviews]);
 
-  if (loading) {
-    return (
-      <StyledWallMainWrapper>
-        <LoadingWrapper>
-          <LoadingSpinner />
-          <LoadingText>Loading Reviews</LoadingText>
-          <LoadingSubtext>Please wait while we fetch the latest reviews</LoadingSubtext>
-          <LoadingDots>
-            <div className="dot"></div>
-            <div className="dot"></div>
-            <div className="dot"></div>
-          </LoadingDots>
-        </LoadingWrapper>
-      </StyledWallMainWrapper>
-    );
-  }
-
-  if (error) {
-    return (
-      <StyledWallMainWrapper>
-        <ErrorWrapper>Failed to load reviews: {error}</ErrorWrapper>
-      </StyledWallMainWrapper>
-    );
-  }
-
   if (reviews.length === 0) {
     return (
       <StyledWallMainWrapper>
-        <EmptyStateWrapper>
+        <div style={{ textAlign: 'center', padding: '2rem' }}>
           <h3>No Reviews Yet</h3>
           <p>Be the first to share your experience!</p>
-        </EmptyStateWrapper>
+        </div>
       </StyledWallMainWrapper>
     );
   }

@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import { useSwipeable } from "react-swipeable";
 import {
@@ -135,7 +136,7 @@ const VideoCardComponent = ({
   );
 };
 
-const VideoWall = () => {
+const VideoWall = ({ reviews }) => {
   const WIDGET_BG_COLOR = "#141414";
   const [playingVideo, setPlayingVideo] = useState(null);
   const [translateX, setTranslateX] = useState(0);

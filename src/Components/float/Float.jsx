@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import {
   FloatWrapper,
@@ -18,7 +20,6 @@ import {
 //   ActionIcons
 } from "./Float.styled";
 import StarIcon from "../../assets/icons/Star";
-import { useReviews } from "../../hooks/useReviews";
 import { Icon } from "@iconify/react/dist/iconify.js";
 
 const useIframeResize = () => {
@@ -42,8 +43,7 @@ const QuoteIcon = () => (
 //   <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10h12" stroke="#888" strokeWidth="2" strokeLinecap="round"/></svg>
 // );
 
-const Float = ({ apiId = "1749890233" }) => {
-  const { reviews, loading, error } = useReviews(apiId);
+const Float = ({ reviews = [] }) => {
   const triggerResize = useIframeResize();
   
   // Get URL parameters
@@ -182,11 +182,7 @@ const Float = ({ apiId = "1749890233" }) => {
     };
   }, [side]);
 
-  if (loading || textReviews.length === 0) {
-    return null;
-  }
-
-  if (error) {
+  if (textReviews.length === 0) {
     return null;
   }
 

@@ -1,5 +1,5 @@
+"use client";
 import React from 'react';
-import { useReviews } from '../../hooks/useReviews';
 import StarIcon from '../../assets/icons/Star';
 import {
   ReviewBlockWrapper,
@@ -11,21 +11,7 @@ import {
   LoadingWrapper,
 } from './ReviewBlock.styled';
 
-const ReviewBlock = ({ apiId = '1749890233' }) => {
-  const { reviews, loading, error } = useReviews(apiId);
-
-  if (loading) {
-    return (
-      <LoadingWrapper>
-        <span>Loading...</span>
-      </LoadingWrapper>
-    );
-  }
-
-  if (error) {
-    return <ReviewBlockWrapper>Error loading reviews</ReviewBlockWrapper>;
-  }
-
+const ReviewBlock = ({ apiId = '1749890233', reviews }) => {
   if (!reviews || reviews.length === 0) {
     return <ReviewBlockWrapper>No reviews yet</ReviewBlockWrapper>;
   }

@@ -1,3 +1,4 @@
+"use client";
 // InlineSlider.jsx
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import {
@@ -16,10 +17,8 @@ import {
   InnerContent
 } from "./InlineSlider.styled";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { useReviews } from "../../hooks/useReviews";
 
-const InlineSlider = ({ apiId = "1749890233" }) => {
-  const { reviews, loading, error } = useReviews(apiId);
+const InlineSlider = ({ apiId = "1749890233", reviews }) => {
   const textReviews = reviews ? reviews.filter(r => r.review_text) : [];
   const [current, setCurrent] = useState(0);
   const [expanded, setExpanded] = useState(false);
@@ -44,10 +43,6 @@ const InlineSlider = ({ apiId = "1749890233" }) => {
       }
     }, 50);
   }, [review]);
-
-  if (loading) return <Wrapper><div>Loading...</div></Wrapper>;
-  if (error) return <Wrapper><div>Error loading reviews</div></Wrapper>;
-  if (!textReviews || textReviews.length === 0) return <Wrapper><div>No reviews</div></Wrapper>;
 
   let faviconUrl = "";
   try {

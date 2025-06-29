@@ -1,5 +1,5 @@
+"use client";
 import React, { useState, useRef, useEffect } from "react";
-import { useReviews } from "../../hooks/useReviews";
 import {
   ListWrapper,
   ListCard,
@@ -19,8 +19,7 @@ import StarIcon from "../../assets/icons/Star";
 
 const BATCH_SIZE = 8;
 
-const List = ({ apiId = "1749890233" }) => {
-  const { reviews, loading, error } = useReviews(apiId);
+const List = ({ apiId = "1749890233", reviews }) => {
   const [expandedIds, setExpandedIds] = useState([]);
   const [overflowMap, setOverflowMap] = useState({});
   const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
@@ -51,20 +50,9 @@ const List = ({ apiId = "1749890233" }) => {
     return <ListStars>{stars}</ListStars>;
   };
 
-  if (loading) {
-    return (
-      <LoadingWrapper>
-        <span>Loading reviews...</span>
-      </LoadingWrapper>
-    );
-  }
+  if (reviews.length === 0) return <ListWrapper>No reviews</ListWrapper>;
 
-  if (error) return <ListWrapper>Error loading reviews</ListWrapper>;
-
-  const filteredReviews = (reviews || []).filter(r => r.review_text);
-  if (filteredReviews.length === 0) return <ListWrapper>No reviews</ListWrapper>;
-
-  const visibleReviews = filteredReviews.slice(0, visibleCount);
+  const visibleReviews = reviews.slice(0, visibleCount);
 
   return (
     <ListWrapper>
@@ -125,7 +113,7 @@ const List = ({ apiId = "1749890233" }) => {
         );
       })}
 
-      {visibleCount < filteredReviews.length && (
+      {visibleCount < reviews.length && (
         <LoadMoreButton onClick={() => setVisibleCount(prev => prev + BATCH_SIZE)}>
           Load More
         </LoadMoreButton>

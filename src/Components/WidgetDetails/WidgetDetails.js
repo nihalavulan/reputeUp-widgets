@@ -1,5 +1,6 @@
+"use client";
 import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { WidgetDetailsWrapper, WidgetHeader, WidgetPreviewSection, WidgetCodeSection, WidgetInstallSection, BackButton, CopyButton, CodeBlock } from './WidgetDetails.styled';
 import * as scriptTemplates from '../../services/scriptTemplates';
 import useCopyToClipboard from '../../hooks/useCopyToClipboard';
@@ -67,9 +68,8 @@ const widgetData = {
   },
 };
 
-const WidgetDetails = () => {
-  const { widgetName } = useParams();
-  const navigate = useNavigate();
+const WidgetDetails = ({ widgetName, reviews }) => {
+  const router = useRouter();
   const widget = widgetData[widgetName];
   const [isCopied, copy] = useCopyToClipboard();
   const [side, setSide] = useState('right');
@@ -78,7 +78,7 @@ const WidgetDetails = () => {
     return (
       <WidgetDetailsWrapper>
         <WidgetHeader>Widget Not Found</WidgetHeader>
-        <BackButton onClick={() => navigate(-1)}>Go Back</BackButton>
+        <BackButton onClick={() => router.back()}>Go Back</BackButton>
       </WidgetDetailsWrapper>
     );
   }
@@ -89,7 +89,7 @@ const WidgetDetails = () => {
 
   return (
     <WidgetDetailsWrapper>
-      <BackButton onClick={() => navigate(-1)}>← Back</BackButton>
+      <BackButton onClick={() => router.back()}>← Back</BackButton>
       <WidgetHeader>{widget.name}</WidgetHeader>
       <p>{widget.description}</p>
       <WidgetPreviewSection>

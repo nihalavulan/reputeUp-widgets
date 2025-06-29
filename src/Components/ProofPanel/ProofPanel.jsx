@@ -1,5 +1,6 @@
+"use client";
+
 import React from "react";
-import { useReviews } from "../../hooks/useReviews";
 import {
   ProofPanelWrapper,
   ProofPanelHeader,
@@ -30,8 +31,7 @@ import {
   ProofPanelLoadMoreButton,
 } from "./ProofPanel.styled";
 
-const ProofPanel = ({ apiId = "1749890233" }) => {
-  const { reviews, loading, error } = useReviews(apiId);
+const ProofPanel = ({ reviews = [] }) => {
   const [activeSource, setActiveSource] = React.useState("All Reviews");
   const [expandedReviews, setExpandedReviews] = React.useState({});
   const [isMobile, setIsMobile] = React.useState(false);
@@ -122,13 +122,6 @@ const ProofPanel = ({ apiId = "1749890233" }) => {
     setVisibleCount(isMobile ? 8 : 18);
   }, [activeSource, isMobile]);
 
-  if (loading) return <ProofPanelLoading>Loading reviews...</ProofPanelLoading>;
-  if (error)
-    return (
-      <ProofPanelError>
-        Error loading reviews. Please try again later.
-      </ProofPanelError>
-    );
   if (!reviewsWithText || reviewsWithText.length === 0)
     return <ProofPanelLoading>No reviews yet</ProofPanelLoading>;
 

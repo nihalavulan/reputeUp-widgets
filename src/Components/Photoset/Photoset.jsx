@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import {
   Wrapper,
@@ -16,7 +18,6 @@ import {
   TextAreaContainer,
 } from "./Photoset.styled";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { useReviews } from "../../hooks/useReviews";
 
 const getReviewPhotos = (review, index) => {
   if (review.photos && review.photos.length > 0) {
@@ -28,9 +29,7 @@ const getReviewPhotos = (review, index) => {
   );
 };
 
-const Photoset = ({ apiId = "1749890233" }) => {
-  const { reviews, loading, error } = useReviews(apiId);
-
+const Photoset = ({ reviews = [] }) => {
   const displayableReviews = reviews
     ? reviews.filter((r) => r.review_text && r.review_text.trim()).slice(0, 5)
     : [];
@@ -76,8 +75,6 @@ const Photoset = ({ apiId = "1749890233" }) => {
     }, 50);
   }, [review]);
 
-  if (loading) return <Wrapper><div>Loading...</div></Wrapper>;
-  if (error) return <Wrapper><div>Error loading reviews</div></Wrapper>;
   if (displayableReviews.length === 0) return <Wrapper><div>No reviews to display</div></Wrapper>;
 
   let reviewPostLink = '';

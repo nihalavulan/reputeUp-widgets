@@ -1,7 +1,8 @@
-import React from 'react'
+"use client";
+import React, { useState, useEffect } from 'react'
 import { StyledHeroMainWrapper, WidgetGrid, WidgetCard, WidgetName, WidgetDescription, ViewDetailsButton } from './Hero.styled'
-import { useNavigate } from 'react-router-dom';
-import { FaThLarge, FaBolt, FaCommentDots, FaSlidersH, FaListUl, FaGripHorizontal, FaStar, FaVideo, FaImages, FaClone, FaWaveSquare } from 'react-icons/fa';
+import { useRouter } from 'next/navigation';
+import { FaThLarge, FaBolt, FaCommentDots, FaSlidersH, FaListUl, FaGripHorizontal, FaStar, FaVideo, FaImages, FaClone, FaWaveSquare, FaSpinner } from 'react-icons/fa';
 
 const widgets = [
   {
@@ -79,20 +80,64 @@ const widgets = [
 ];
 
 const Hero = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
+  const [loadingWidget, setLoadingWidget] = useState(null);
+
+  // Prefetch all widget routes when component mounts
+  useEffect(() => {
+    widgets.forEach(widget => {
+      router.prefetch(`/widget-details/${widget.route}`);
+    });
+  }, [router]);
+
+  const handleWidgetClick = (widget) => {
+    setLoadingWidget(widget.route);
+    router.push(`/widget-details/${widget.route}`);
+  };
+
   return (
     <StyledHeroMainWrapper>
       <h1>Testimonials made easy.</h1>
       <WidgetGrid>
         {widgets.map(widget => (
-          <WidgetCard key={widget.name} onClick={() => navigate(`/widget-details/${widget.route}`)}>
-            {/* <WidgetPreview>{widget.icon}</WidgetPreview> */}
+          <WidgetCard 
+            key={widget.name} 
+            onClick={() => handleWidgetClick(widget)}
+            onMouseEnter={() => {
+              // Additional prefetch on hover for extra speed
+              router.prefetch(`/widget-details/${widget.route}`);
+            }}
+            style={{ 
+              opacity: loadingWidget && loadingWidget !== widget.route ? 0.6 : 1,
+              cursor: loadingWidget ? 'wait' : 'pointer'
+            }}
+          >
             <WidgetName>{widget.name}</WidgetName>
             <WidgetDescription>{widget.description}</WidgetDescription>
-            <ViewDetailsButton>View Details</ViewDetailsButton>
+            <ViewDetailsButton disabled={loadingWidget}>
+              {loadingWidget === widget.route ? (
+                <>
+                  <FaSpinner className="spinner" style={{ marginRight: '8px' }} />
+                  Loading...
+                </>
+              ) : (
+                'View Details'
+              )}
+            </ViewDetailsButton>
           </WidgetCard>
         ))}
       </WidgetGrid>
+      
+      <style jsx>{`
+        .spinner {
+          animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </StyledHeroMainWrapper>
   )
 }

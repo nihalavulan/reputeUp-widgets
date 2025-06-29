@@ -1,5 +1,6 @@
+"use client";
+
 import React, { useState } from "react";
-import { useReviews } from "../../hooks/useReviews";
 
 import {
   CardDeckWrapper,
@@ -12,20 +13,16 @@ import {
   CardDeckError
 } from "./CardDeck.styled";
 
-const CardDeck = ({ apiId = "1749890233" }) => {
-  const { reviews, loading, error } = useReviews(apiId);
-
+const CardDeck = ({ reviews = [] }) => {
   const reviewsWithText = reviews
     ? reviews.filter(
         (r) => (r.review_title && r.review_title.trim() !== "") || (r.review_text && r.review_text.trim() !== "")
       )
     : [];
 
-
   const [leftCards, setLeftCards] = useState([0, 1, 2, 3]);
   const [rightCards, setRightCards] = useState([4, 5, 6, 7]);
   const [centerCard, setCenterCard] = useState(8);
-
 
   const handleCardClick = (side, idx) => {
     if (side === "left") {
@@ -43,8 +40,6 @@ const CardDeck = ({ apiId = "1749890233" }) => {
     }
   };
 
-  if (loading) return <CardDeckLoading>Loading reviews...</CardDeckLoading>;
-  if (error) return <CardDeckError>Error loading reviews.</CardDeckError>;
   if (!reviewsWithText || reviewsWithText.length < 9) return <CardDeckLoading>Not enough reviews</CardDeckLoading>;
 
   return (

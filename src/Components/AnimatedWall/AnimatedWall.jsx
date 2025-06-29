@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState, useMemo } from "react";
 import { ThemeProvider } from "styled-components";
 import {
@@ -19,7 +20,6 @@ import {
   darkTheme,
 } from "./AnimatedWall.styled";
 import StarIcon from "../../assets/icons/Star";
-import { useReviews } from "../../hooks/useReviews";
 
 const AnimatedWallStarRating = ({ rating }) => {
   const stars = [];
@@ -56,8 +56,7 @@ const AnimatedWallReviewCard = ({ review }) => {
   );
 };
 
-const AnimatedWall = ({ apiId = "1749890233" }) => {
-  const { reviews, loading, error } = useReviews(apiId);
+const AnimatedWall = ({ apiId = "1749890233", reviews }) => {
   const [columnsCount, setColumnsCount] = useState(3);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     // Check for saved theme preference or default to light mode
@@ -114,38 +113,6 @@ const AnimatedWall = ({ apiId = "1749890233" }) => {
   };
 
   const currentTheme = isDarkMode ? darkTheme : lightTheme;
-
-  if (loading) {
-    return (
-      <ThemeProvider theme={currentTheme}>
-        <GlobalStyle />
-        <AnimatedWallMainWrapper>
-          <ThemeToggleButton onClick={toggleTheme}>
-            {isDarkMode ? '☀️' : '🌙'}
-          </ThemeToggleButton>
-          <AnimatedWallLoadingWrapper>
-            Loading Reviews...
-          </AnimatedWallLoadingWrapper>
-        </AnimatedWallMainWrapper>
-      </ThemeProvider>
-    );
-  }
-
-  if (error) {
-    return (
-      <ThemeProvider theme={currentTheme}>
-        <GlobalStyle />
-        <AnimatedWallMainWrapper>
-          <ThemeToggleButton onClick={toggleTheme}>
-            {isDarkMode ? '☀️' : '🌙'}
-          </ThemeToggleButton>
-          <AnimatedWallErrorWrapper>
-            Failed to load reviews: {error}
-          </AnimatedWallErrorWrapper>
-        </AnimatedWallMainWrapper>
-      </ThemeProvider>
-    );
-  }
 
   if (filteredReviews.length === 0) {
     return (

@@ -2,6 +2,12 @@
   "name": "widgetify",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
@@ -9,42 +15,17 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.9.0",
     "iframe-resizer": "^5.4.6",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
+    "next": "^14.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-icons": "^5.5.0",
     "react-masonry-css": "^1.0.16",
-    "react-router": "^7.6.2",
-    "react-router-dom": "^7.6.2",
-    "react-scripts": "5.0.1",
     "react-swipeable": "^7.0.2",
-    "styled-components": "^6.1.19",
-    "web-vitals": "^2.1.4"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "styled-components": "^6.1.19"
   },
   "devDependencies": {
-    "@iconify/react": "^6.0.0"
+    "@iconify/react": "^6.0.0",
+    "eslint": "^8.0.0",
+    "eslint-config-next": "^14.0.0"
   }
 }
