@@ -25,13 +25,17 @@ export const ListCard = styled.div`
   }
 `;
 
-export const ListAvatar = styled.img`
+export const ListAvatar = styled.div`
   width: 48px;
   height: 48px;
   border-radius: 50%;
   object-fit: cover;
   background: #eaeaea;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 `;
 
 export const ListContent = styled.div`
