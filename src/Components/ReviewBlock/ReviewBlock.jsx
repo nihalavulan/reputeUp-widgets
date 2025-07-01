@@ -10,8 +10,9 @@ import {
   AvatarImage,
   LoadingWrapper,
 } from './ReviewBlock.styled';
+import Image from 'next/image';
 
-const ReviewBlock = ({ apiId = '1749890233', reviews }) => {
+const ReviewBlock = ({ apiId = '1749890233', reviews, widget_settings = {} }) => {
   if (!reviews || reviews.length === 0) {
     return <ReviewBlockWrapper>No reviews yet</ReviewBlockWrapper>;
   }
@@ -25,6 +26,10 @@ const ReviewBlock = ({ apiId = '1749890233', reviews }) => {
   const reviewersWithPics = reviews.filter(r => r.author_pic || r.customer_photo);
   const randomReviewers = reviewersWithPics.sort(() => 0.5 - Math.random()).slice(0, 5);
 
+  const mainBg = widget_settings.bg_color || undefined;
+  const txtColor = widget_settings.txt_color || undefined;
+  const fontFamily = widget_settings.font_family || undefined;
+  const starColor = widget_settings.star_color || undefined;
 
   const renderStars = (rating) => {
     const stars = [];
@@ -33,7 +38,7 @@ const ReviewBlock = ({ apiId = '1749890233', reviews }) => {
     const emptyStars = 5 - fullStars - (partialStar > 0 ? 1 : 0);
 
     for (let i = 0; i < fullStars; i++) {
-      stars.push(<StarIcon key={`full-${i}`} />);
+      stars.push(<StarIcon key={`full-${i}`} color={starColor} />);
     }
 
     if (partialStar > 0) {
@@ -41,7 +46,7 @@ const ReviewBlock = ({ apiId = '1749890233', reviews }) => {
         <div key="partial" style={{ position: 'relative', display: 'inline-block', lineHeight: 1 }}>
           <StarIcon color="#e4e5e9" />
           <div style={{ position: 'absolute', top: 0, left: 0, overflow: 'hidden', width: `${partialStar * 100}%` }}>
-            <StarIcon />
+            <StarIcon color={starColor} />
           </div>
         </div>
       );
@@ -55,16 +60,24 @@ const ReviewBlock = ({ apiId = '1749890233', reviews }) => {
   };
 
   return (
-    <ReviewBlockWrapper>
+    <ReviewBlockWrapper style={{ background: mainBg, color: txtColor, fontFamily }}>
       <ReviewBlockContent>
         <ReviewBlockAvatars>
           {randomReviewers.map((review, index) => (
-            <AvatarImage
-              key={review.id || index}
-              src={review.author_pic || review.customer_photo}
-              alt="reviewer"
-              style={{ zIndex: randomReviewers.length - index }}
-            />
+            review.author_pic || review.customer_photo ? (
+              <Image
+                key={review.id || index}
+                src={review.author_pic || review.customer_photo}
+                alt="reviewer"
+                width={40}
+                height={40}
+                style={{ borderRadius: '50%', objectFit: 'cover', zIndex: randomReviewers.length - index }}
+              />
+            ) : (
+              <div key={review.id || index} style={{ width: 40, height: 40, borderRadius: '50%', background: '#eaeaea', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888', fontWeight: 600, fontSize: 16, zIndex: randomReviewers.length - index }}>
+                {(review.customer_firstname?.[0] || review.author_name?.[0] || 'A').toUpperCase()}
+              </div>
+            )
           ))}
         </ReviewBlockAvatars>
         <div>

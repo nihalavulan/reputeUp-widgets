@@ -3,6 +3,6 @@ import { getServerReviews } from '@/services/serverReviewService'
 
 export default async function VideoWallPage() {
   const apiId = "1749890233";
-  const reviews = await getServerReviews(apiId);
-  return <VideoWall reviews={reviews} />
+  const { reviews, widget_settings } = await getServerReviews(apiId);
+  return <VideoWall reviews={reviews} widget_settings={widget_settings} />
 } 

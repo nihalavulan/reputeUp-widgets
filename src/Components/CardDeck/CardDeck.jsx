@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCards } from 'swiper/modules';
+import Image from 'next/image';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -19,7 +20,7 @@ import {
   CardDeckError
 } from "./CardDeck.styled";
 
-const CardDeck = ({ reviews = [] }) => {
+const CardDeck = ({ reviews = [], widget_settings = {} }) => {
   const [swiper, setSwiper] = useState(null);
   
   const reviewsWithText = reviews
@@ -39,12 +40,16 @@ const CardDeck = ({ reviews = [] }) => {
     }
   }, [swiper, limitedReviews]);
 
+  const mainBg = widget_settings.bg_color || undefined;
+  const txtColor = widget_settings.txt_color || undefined;
+  const fontFamily = widget_settings.font_family || undefined;
+
   if (!limitedReviews || limitedReviews.length === 0) {
     return <CardDeckLoading>No reviews available</CardDeckLoading>;
   }
 
   return (
-    <CardDeckWrapper>
+    <CardDeckWrapper style={{ background: mainBg, color: txtColor, fontFamily }}>
       <CardDeckContainer>
         <Swiper
           effect={'cards'}
@@ -62,19 +67,28 @@ const CardDeck = ({ reviews = [] }) => {
         >
           {limitedReviews.map((review, index) => (
             <SwiperSlide key={index}>
-              <CardDeckCard>
-                <CardDeckReviewText>
-                  {review.review_text || review.review_title}
-                </CardDeckReviewText>
+              <CardDeckCard style={{ background: mainBg, color: txtColor, fontFamily }}>
+                <CardDeckReviewText>{review.review_text || review.review_title}</CardDeckReviewText>
                 <CardDeckAuthorInfo>
-                  <CardDeckAvatar 
-                    src={review.customer_photo || review.author_pic} 
-                    alt={review.customer_firstname || "Anonymous"}
-                    onError={(e) => {
-                      e.target.style.display = 'none';
-                    }}
-                  />
-                  <span>{review.customer_firstname || "Anonymous"}</span>
+                  {review.customer_photo || review.author_pic ? (
+                    <Image
+                      src={review.customer_photo || review.author_pic}
+                      alt={review.customer_firstname || ''}
+                      width={40}
+                      height={40}
+                      style={{ borderRadius: '50%', objectFit: 'cover' }}
+                      onError={(e) => { e.target.style.display = 'none'; }}
+                    />
+                  ) : (
+                    <div style={{
+                      width: 40, height: 40, borderRadius: '50%', background: '#eaeaea', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888', fontWeight: 600, fontSize: 16
+                    }}>
+                      {review.customer_firstname?.[0]?.toUpperCase() || ''}
+                    </div>
+                  )}
+                  <span>
+                    {review.customer_firstname ? `${review.customer_firstname}${review.customer_lastname ? ` ${review.customer_lastname}` : ''}` : ''}
+                  </span>
                 </CardDeckAuthorInfo>
               </CardDeckCard>
             </SwiperSlide>

@@ -79,7 +79,7 @@ const widgets = [
   },
 ];
 
-const Hero = () => {
+const Hero = ({ widget_settings = {} }) => {
   const router = useRouter();
   const [loadingWidget, setLoadingWidget] = useState(null);
 
@@ -95,8 +95,12 @@ const Hero = () => {
     router.push(`/widget-details/${widget.route}`);
   };
 
+  const mainBg = widget_settings.bg_color || undefined;
+  const txtColor = widget_settings.txt_color || undefined;
+  const fontFamily = widget_settings.font_family || undefined;
+
   return (
-    <StyledHeroMainWrapper>
+    <StyledHeroMainWrapper style={{ background: mainBg, color: txtColor, fontFamily }}>
       <h1>Testimonials made easy.</h1>
       <WidgetGrid>
         {widgets.map(widget => (
@@ -109,7 +113,8 @@ const Hero = () => {
             }}
             style={{ 
               opacity: loadingWidget && loadingWidget !== widget.route ? 0.6 : 1,
-              cursor: loadingWidget ? 'wait' : 'pointer'
+              cursor: loadingWidget ? 'wait' : 'pointer',
+              background: mainBg, color: txtColor, fontFamily
             }}
           >
             <WidgetName>{widget.name}</WidgetName>

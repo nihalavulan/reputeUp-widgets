@@ -124,7 +124,7 @@ const ReviewCard = React.memo(({ review, onImageLoad, renderStars }) => {
             <StyledBodyAuthorDetailsWrapper>
               <img src={review?.author_pic || review?.customer_photo} alt="" />
               <div>
-                <h3>{review.author_name || review.customer_firstname}</h3>
+                <h3>{review.customer_firstname ? `${review.customer_firstname}${review.customer_lastname ? ' ' + review.customer_lastname : ''}` : ''}</h3>
                 <h6>
                   {review.author_designation ||
                     review.work_title }
@@ -174,7 +174,7 @@ const ReviewCard = React.memo(({ review, onImageLoad, renderStars }) => {
 
 ReviewCard.displayName = "ReviewCard";
 
-const Wall = ({ reviews = [] }) => {
+const Wall = ({ reviews = [], widget_settings = {} }) => {
   const triggerResize = useIframeResize();
   
   // Pagination state
@@ -190,21 +190,20 @@ const Wall = ({ reviews = [] }) => {
     []
   );
 
+  // Use widget_settings for styles
+  const mainBg = widget_settings.bg_color || '#ffffff';
+  const txtColor = widget_settings.txt_color || '#000';
+  const fontFamily = widget_settings.font_family || "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif";
+  const starColor = widget_settings.star_color || '#FFD700';
+
   const renderStars = useMemo(
     () => (rating) => {
       const stars = [];
-
       for (let i = 0; i < rating; i++) {
-        stars.push(<StarIcon key={i} />);
+        stars.push(<StarIcon key={i} color={starColor} />);
       }
-
-      return (
-        <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-          {stars}
-        </div>
-      );
-    },
-    []
+      return <span>{stars}</span>;
+    }, [starColor]
   );
 
   const handleImageLoad = useCallback(() => {
@@ -249,7 +248,7 @@ const Wall = ({ reviews = [] }) => {
   return (
     <>
       <style>{MasonryGridStyles}</style>
-      <StyledWallMainWrapper>
+      <StyledWallMainWrapper style={{ background: mainBg, color: txtColor, fontFamily }}>
         <Masonry
           breakpointCols={breakpointColumnsObj}
           className="my-masonry-grid"

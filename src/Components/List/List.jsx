@@ -16,14 +16,20 @@ import {
   LoadingWrapper
 } from "./List.styled";
 import StarIcon from "../../assets/icons/Star";
+import Image from 'next/image';
 
 const BATCH_SIZE = 8;
 
-const List = ({ apiId = "1749890233", reviews }) => {
+const List = ({ apiId = "1749890233", reviews, widget_settings = {} }) => {
   const [expandedIds, setExpandedIds] = useState([]);
   const [overflowMap, setOverflowMap] = useState({});
   const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
   const textRefs = useRef({});
+
+  const mainBg = widget_settings.bg_color || undefined;
+  const txtColor = widget_settings.txt_color || undefined;
+  const fontFamily = widget_settings.font_family || undefined;
+  const starColor = widget_settings.star_color || undefined;
 
   const toggleReadMore = (id) => {
     setExpandedIds((prev) =>
@@ -45,7 +51,7 @@ const List = ({ apiId = "1749890233", reviews }) => {
   const renderStars = (rating) => {
     const stars = [];
     for (let i = 0; i < rating; i++) {
-      stars.push(<StarIcon key={i} />);
+      stars.push(<StarIcon key={i} color={starColor} />);
     }
     return <ListStars>{stars}</ListStars>;
   };
@@ -55,7 +61,7 @@ const List = ({ apiId = "1749890233", reviews }) => {
   const visibleReviews = reviews.slice(0, visibleCount);
 
   return (
-    <ListWrapper>
+    <ListWrapper style={{ background: mainBg, color: txtColor, fontFamily }}>
       {visibleReviews.map((review) => {
         const isExpanded = expandedIds.includes(review.id);
         const hasOverflowed = overflowMap[review.id];
@@ -71,7 +77,23 @@ const List = ({ apiId = "1749890233", reviews }) => {
 
         return (
           <ListCard key={review.id}>
-            <ListAvatar src={review.author_pic || review.customer_photo} alt="avatar" />
+            <ListAvatar>
+              {review.author_pic || review.customer_photo ? (
+                <Image
+                  src={review.author_pic || review.customer_photo}
+                  alt="avatar"
+                  width={48}
+                  height={48}
+                  style={{ borderRadius: '50%', objectFit: 'cover' }}
+                />
+              ) : (
+                <div style={{
+                  width: 48, height: 48, borderRadius: '50%', background: '#eaeaea', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888', fontWeight: 600, fontSize: 18
+                }}>
+                  {(review.customer_firstname?.[0] || review.author_name?.[0] || 'A').toUpperCase()}
+                </div>
+              )}
+            </ListAvatar>
             <ListContent>
               <ListText
                 ref={(el) => (textRefs.current[review.id] = el)}
@@ -85,7 +107,9 @@ const List = ({ apiId = "1749890233", reviews }) => {
                 </ReadMoreToggle>
               )}
               <ListFooter>
-                <ListName>{review.customer_firstname} {review.customer_lastname}</ListName>
+                <ListName>
+                  {review.customer_firstname ? `${review.customer_firstname}${review.customer_lastname ? ' ' + review.customer_lastname : ''}` : ''}
+                </ListName>
                 <ListRightMeta>
                   {renderStars(review.rating)}
                   <span style={{ fontSize: 13, color: '#888' }}>

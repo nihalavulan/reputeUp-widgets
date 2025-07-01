@@ -15,6 +15,7 @@ import {
   StyledReviewLinkWrapper
 } from "./Flash.styled";
 import StarIcon from "../../assets/icons/Star";
+import Image from 'next/image';
 
 const useIframeResize = () => {
   const triggerResize = useCallback(() => {
@@ -26,7 +27,7 @@ const useIframeResize = () => {
   return triggerResize;
 };
 
-const Flash = ({ reviews = [] }) => {
+const Flash = ({ reviews = [], widget_settings = {} }) => {
   const triggerResize = useIframeResize();
   
   // Get URL parameters
@@ -50,6 +51,11 @@ const Flash = ({ reviews = [] }) => {
 
   const AUTO_ADVANCE_INTERVAL = 3000; // 3 seconds
 
+  const txtColor = widget_settings.txt_color || undefined;
+  const fontFamily = widget_settings.font_family || undefined;
+  const starColor = widget_settings.star_color || undefined;
+  const cardBgColor = widget_settings.card_bg_color || undefined;
+
   // Check if text is truncated
   const checkTextTruncation = useCallback((reviewIndex) => {
     const textElement = textRefs.current[reviewIndex];
@@ -71,15 +77,12 @@ const Flash = ({ reviews = [] }) => {
     () => (rating) => {
       const stars = [];
       for (let i = 0; i < rating; i++) {
-        stars.push(<StarIcon key={i} />);
+        stars.push(<StarIcon key={i} color={starColor} />);
       }
       return (
-        <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>
-          {stars}
-        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>{stars}</div>
       );
-    },
-    []
+    }, [starColor]
   );
 
   const handleIndicatorClick = useCallback((index) => {
@@ -191,29 +194,40 @@ const Flash = ({ reviews = [] }) => {
   const isTruncated = truncatedReviews.has(currentIndex);
 
   return (
-    <FlashWrapper side={side}>
+    <FlashWrapper side={side} style={{ color: txtColor, fontFamily }}>
       <FlashCard 
         side={side} 
         isTransitioning={isTransitioning}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        style={{ background: cardBgColor, color: txtColor, fontFamily }}
       >
         <FlashContent isTransitioning={isTransitioning}>
           <FlashHeader>
             <FlashAuthor>
               {currentReview.customer_photo || currentReview.author_pic ? (
-                <img 
-                  src={currentReview.author_pic || currentReview.customer_photo } 
-                  alt="" 
+                <Image
+                  src={currentReview.author_pic || currentReview.customer_photo}
+                  alt=""
+                  width={28}
+                  height={28}
+                  style={{ borderRadius: '4px', objectFit: 'cover', marginLeft: 2 }}
                 />
               ) : (
-                <div className="avatar-placeholder">
-                  {(currentReview.customer_firstname || currentReview.author_name || 'A').charAt(0)}
+                <div style={{
+                  width: 28, height: 28, borderRadius: '50%',
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  color: 'white', fontWeight: 600, fontSize: 12,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 2
+                }}>
+                  {(currentReview.customer_firstname?.[0] || currentReview.author_name?.[0] || 'A').toUpperCase()}
                 </div>
               )}
             </FlashAuthor>
             <div>
-
+              <h4>
+                {currentReview.customer_firstname ? `${currentReview.customer_firstname}${currentReview.customer_lastname ? ' ' + currentReview.customer_lastname : ''}` : ''}
+              </h4>
           <FlashText>
             {currentReview.review_title && (
               <h3 className="review-title">{currentReview.review_title}</h3>

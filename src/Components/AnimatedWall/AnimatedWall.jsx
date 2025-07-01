@@ -20,6 +20,7 @@ import {
   darkTheme,
 } from "./AnimatedWall.styled";
 import StarIcon from "../../assets/icons/Star";
+import Image from 'next/image';
 
 const AnimatedWallStarRating = ({ rating }) => {
   const stars = [];
@@ -34,14 +35,16 @@ const AnimatedWallReviewCard = ({ review }) => {
     <AnimatedWallCard>
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
         <AnimatedWallAuthorImage 
-          src={review?.author_pic || review?.customer_photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(review.customer_firstname || review.author_name || 'User')}&background=random`} 
+          as={Image}
+          src={review?.author_pic || review?.customer_photo || `https://ui-avatars.com/api/?name=${encodeURIComponent((review.customer_firstname?.[0] || review.author_name?.[0] || 'A').toUpperCase())}&background=random`} 
           alt="Author" 
+          width={40}
+          height={40}
+          style={{ borderRadius: '50%', objectFit: 'cover' }}
         />
         <AnimatedWallAuthorDetails>
           <AnimatedWallAuthorName>
-            {review.customer_firstname 
-              ? `${review.customer_firstname}${review.customer_lastname ? ' ' + review.customer_lastname : ''}`
-              : review.author_name || 'Anonymous'}
+            {review.customer_firstname ? `${review.customer_firstname}${review.customer_lastname ? ' ' + review.customer_lastname : ''}` : ''}
           </AnimatedWallAuthorName>
           <AnimatedWallAuthorDesignation>
             {review.author_designation || review.work_title || 'Customer'}
@@ -56,7 +59,7 @@ const AnimatedWallReviewCard = ({ review }) => {
   );
 };
 
-const AnimatedWall = ({ apiId = "1749890233", reviews }) => {
+const AnimatedWall = ({ apiId = "1749890233", reviews, widget_settings = {} }) => {
   const [columnsCount, setColumnsCount] = useState(3);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     // Check for saved theme preference or default to light mode
@@ -112,13 +115,20 @@ const AnimatedWall = ({ apiId = "1749890233", reviews }) => {
     setIsDarkMode(!isDarkMode);
   };
 
-  const currentTheme = isDarkMode ? darkTheme : lightTheme;
+  // Use widget_settings for theme overrides
+  const customTheme = {
+    ...((isDarkMode ? darkTheme : lightTheme)),
+    background: widget_settings.bg_color || (isDarkMode ? darkTheme.background : lightTheme.background),
+    textPrimary: widget_settings.txt_color || (isDarkMode ? darkTheme.textPrimary : lightTheme.textPrimary),
+    fontFamily: widget_settings.font_family || 'Roboto, Arial, sans-serif',
+    starColor: widget_settings.star_color || '#FFD700',
+  };
 
   if (filteredReviews.length === 0) {
     return (
-      <ThemeProvider theme={currentTheme}>
+      <ThemeProvider theme={customTheme}>
         <GlobalStyle />
-        <AnimatedWallMainWrapper>
+        <AnimatedWallMainWrapper style={{ fontFamily: customTheme.fontFamily }}>
           <ThemeToggleButton onClick={toggleTheme}>
             {isDarkMode ? '☀️' : '🌙'}
           </ThemeToggleButton>
@@ -131,9 +141,9 @@ const AnimatedWall = ({ apiId = "1749890233", reviews }) => {
   }
 
   return (
-    <ThemeProvider theme={currentTheme}>
+    <ThemeProvider theme={customTheme}>
       <GlobalStyle />
-      <AnimatedWallMainWrapper>
+      <AnimatedWallMainWrapper style={{ fontFamily: customTheme.fontFamily }}>
         <ThemeToggleButton onClick={toggleTheme}>
           {isDarkMode ? '☀️' : '🌙'}
         </ThemeToggleButton>

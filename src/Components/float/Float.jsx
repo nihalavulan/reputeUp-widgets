@@ -21,6 +21,7 @@ import {
 } from "./Float.styled";
 import StarIcon from "../../assets/icons/Star";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import Image from 'next/image';
 
 const useIframeResize = () => {
   const triggerResize = useCallback(() => {
@@ -43,7 +44,7 @@ const QuoteIcon = () => (
 //   <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10h12" stroke="#888" strokeWidth="2" strokeLinecap="round"/></svg>
 // );
 
-const Float = ({ reviews = [] }) => {
+const Float = ({ reviews = [], widget_settings = {} }) => {
   const triggerResize = useIframeResize();
   
   // Get URL parameters
@@ -64,19 +65,21 @@ const Float = ({ reviews = [] }) => {
   
   const textRefs = useRef({});
 
+  const txtColor = widget_settings.txt_color || undefined;
+  const fontFamily = widget_settings.font_family || undefined;
+  const starColor = widget_settings.star_color || undefined;
+  const cardBgColor = widget_settings.card_bg_color || undefined;
+
   const renderStars = useMemo(
     () => (rating) => {
       const stars = [];
       for (let i = 0; i < rating; i++) {
-        stars.push(<StarIcon key={i} />);
+        stars.push(<StarIcon key={i} color={starColor} />);
       }
       return (
-        <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>
-          {stars}
-        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>{stars}</div>
       );
-    },
-    []
+    }, [starColor]
   );
 
   const handleNavigation = useCallback((direction) => {
@@ -193,8 +196,8 @@ const Float = ({ reviews = [] }) => {
   const isTruncated = truncatedReviews.has(currentIndex) || isLongText;
 
   return (
-    <FloatWrapper side={side}>
-      <FloatCard side={side} isTransitioning={isTransitioning} transitionDirection={transitionDirection}>
+    <FloatWrapper side={side} style={{ color: txtColor, fontFamily }}>
+      <FloatCard side={side} isTransitioning={isTransitioning} transitionDirection={transitionDirection} style={{ background: cardBgColor, color: txtColor, fontFamily }}>
         <NavigationArrowLeft 
           onClick={() => handleNavigation('prev')}
           disabled={textReviews.length <= 1}
@@ -296,8 +299,7 @@ const Float = ({ reviews = [] }) => {
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <div style={{ display : 'flex' , flexDirection : 'column' , alignItems : 'flex-end' , gap : '2px' }}>
               <span style={{ fontWeight: 700, fontSize: 15, color: '#222', marginRight: 2 }}>
-                {currentReview.customer_firstname}
-                {currentReview.customer_lastname ? ` ${currentReview.customer_lastname[0]}.` : ''}
+                {currentReview.customer_firstname ? `${currentReview.customer_firstname}${currentReview.customer_lastname ? ' ' + currentReview.customer_lastname[0] + '.' : ''}` : ''}
               </span>
 
               <StyledReviewLinkWrapper href={currentReview.review_link} target="_blank">
@@ -318,14 +320,21 @@ const Float = ({ reviews = [] }) => {
             </StyledReviewLinkWrapper>
                 </div>
               {currentReview.customer_photo || currentReview.author_pic ? (
-                <img 
-                  src={ currentReview.author_pic || currentReview.customer_photo} 
-                  alt="" 
-                  style={{ width: 28, height: 28, borderRadius: '4px', objectFit: 'cover', marginLeft: 2 }}
+                <Image
+                  src={currentReview.author_pic || currentReview.customer_photo}
+                  alt=""
+                  width={28}
+                  height={28}
+                  style={{ borderRadius: '4px', objectFit: 'cover', marginLeft: 2 }}
                 />
               ) : (
-                <div className="avatar-placeholder" style={{ width: 28, height: 28, borderRadius: '50%', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: 'white', fontWeight: 600, fontSize: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 2 }}>
-                  {(currentReview.customer_firstname || currentReview.author_name || 'A').charAt(0)}
+                <div style={{
+                  width: 28, height: 28, borderRadius: '50%',
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  color: 'white', fontWeight: 600, fontSize: 12,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 2
+                }}>
+                  {(currentReview.customer_firstname?.[0] || currentReview.author_name?.[0] || 'A').toUpperCase()}
                 </div>
               )}
             </div>

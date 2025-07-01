@@ -86,7 +86,8 @@ export const FadeOverlay = styled.div`
   bottom: 40px;
   height: 3em;
   width: 100%;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff);
+  /* background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff); */
+  background: none;
   pointer-events: none;
   z-index: 2;
 

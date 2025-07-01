@@ -17,6 +17,7 @@ import {
 } from "./Grid.styled";
 import StarIcon from "../../assets/icons/Star";
 import { Icon } from "@iconify/react";
+import Image from 'next/image';
 
 const ITEMS_PER_PAGE = 12;
 
@@ -24,10 +25,10 @@ const QuoteIcon = () => (
   <Icon icon="mingcute:quote-left-fill" width="36" height="36" style={{ color: "#ff8907" }} />
 );
 
-const renderStars = (rating) => {
+const renderStars = (rating, starColor) => {
   const stars = [];
   for (let i = 0; i < rating; i++) {
-    stars.push(<StarIcon key={i} />);
+    stars.push(<StarIcon key={i} color={starColor} />);
   }
   return <CardRating>{stars}</CardRating>;
 };
@@ -43,7 +44,7 @@ const getFaviconUrl = (review_link) => {
   return "";
 };
 
-const Grid = ({ apiId = "1749890233", reviews }) => {
+const Grid = ({ apiId = "1749890233", reviews, widget_settings = {} }) => {
   const [modalReview, setModalReview] = useState(null);
   const [displayedCount, setDisplayedCount] = useState(ITEMS_PER_PAGE);
   const modalRef = useRef(null);
@@ -59,15 +60,20 @@ const Grid = ({ apiId = "1749890233", reviews }) => {
   const displayedReviews = useMemo(() => textReviews.slice(0, displayedCount), [textReviews, displayedCount]);
   const hasMore = textReviews.length > displayedCount;
 
+  const mainBg = widget_settings.bg_color || undefined;
+  const txtColor = widget_settings.txt_color || undefined;
+  const fontFamily = widget_settings.font_family || undefined;
+  const starColor = widget_settings.star_color || undefined;
+
   return (
     <>
-      <GridWrapper>
+      <GridWrapper style={{ background: mainBg, color: txtColor, fontFamily }}>
         {displayedReviews.map((review, idx) => {
           const isLong = review.review_text.length > 180;
           const displayText = isLong ? review.review_text.slice(0, 180) + "... " : review.review_text;
           const faviconUrl = getFaviconUrl(review.review_link);
           return (
-            <GridCard key={review.id || idx}>
+            <GridCard key={review.id || idx} style={{ background: mainBg, color: txtColor, fontFamily }}>
               <CardContentRow>
                 <QuoteIconWrap><QuoteIcon /></QuoteIconWrap>
                 <CardText>
@@ -89,12 +95,11 @@ const Grid = ({ apiId = "1749890233", reviews }) => {
                     </a>
                   )}
                 </div>
-                {renderStars(review.rating)}
+                {renderStars(review.rating, starColor)}
                 <CardAuthor>
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '2px' }}>
                     <span style={{ fontWeight: 700, fontSize: 15, color: '#222' }}>
-                      {review.customer_firstname}
-                      {review.customer_lastname ? ` ${review.customer_lastname[0]}.` : ''}
+                      {review.customer_firstname ? `${review.customer_firstname}${review.customer_lastname ? ' ' + review.customer_lastname : ''}` : ''}
                     </span>
                     <GridReviewDate>
                       {review.review_date && new Date(review.review_date).toLocaleDateString("en-US", {
@@ -106,10 +111,12 @@ const Grid = ({ apiId = "1749890233", reviews }) => {
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                     {review.customer_photo || review.author_pic ? (
-                      <img
-                        src={review.author_pic || review.customer_photo}
+                      <Image
+                        src={review.customer_photo || review.author_pic}
                         alt=""
-                        style={{ width: 28, height: 28, borderRadius: '4px', objectFit: 'cover' }}
+                        width={28}
+                        height={28}
+                        style={{ borderRadius: '4px', objectFit: 'cover' }}
                       />
                     ) : (
                       <div style={{
@@ -118,7 +125,7 @@ const Grid = ({ apiId = "1749890233", reviews }) => {
                         color: 'white', fontWeight: 600, fontSize: 12,
                         display: 'flex', alignItems: 'center', justifyContent: 'center'
                       }}>
-                        {(review.customer_firstname || review.author_name || 'A').charAt(0)}
+                        {(review.customer_firstname?.[0] || review.author_name?.[0] || 'A').toUpperCase()}
                       </div>
                     )}
                   </div>
@@ -167,12 +174,11 @@ const Grid = ({ apiId = "1749890233", reviews }) => {
                   </a>
                 )}
               </div>
-              {renderStars(modalReview.rating)}
+              {renderStars(modalReview.rating, starColor)}
               <CardAuthor>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '2px' }}>
                   <span style={{ fontWeight: 700, fontSize: 13, color: '#222' }}>
-                    {modalReview.customer_firstname}
-                    {modalReview.customer_lastname ? ` ${modalReview.customer_lastname[0]}.` : ''}
+                    {modalReview.customer_firstname ? `${modalReview.customer_firstname}${modalReview.customer_lastname ? ' ' + modalReview.customer_lastname[0] + '.' : ''}` : ''}
                   </span>
                   <GridReviewDate>
                     {modalReview.review_date && new Date(modalReview.review_date).toLocaleDateString("en-US", {
@@ -184,10 +190,12 @@ const Grid = ({ apiId = "1749890233", reviews }) => {
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                   {modalReview.customer_photo || modalReview.author_pic ? (
-                    <img
+                    <Image
                       src={modalReview.customer_photo || modalReview.author_pic}
                       alt=""
-                      style={{ width: 28, height: 28, borderRadius: '4px', objectFit: 'cover' }}
+                      width={28}
+                      height={28}
+                      style={{ borderRadius: '4px', objectFit: 'cover' }}
                     />
                   ) : (
                     <div style={{
@@ -196,7 +204,7 @@ const Grid = ({ apiId = "1749890233", reviews }) => {
                       color: 'white', fontWeight: 600, fontSize: 12,
                       display: 'flex', alignItems: 'center', justifyContent: 'center'
                     }}>
-                      {(modalReview.customer_firstname || modalReview.author_name || 'A').charAt(0)}
+                      {(modalReview.customer_firstname?.[0] || modalReview.author_name?.[0] || 'A').toUpperCase()}
                     </div>
                   )}
                 </div>

@@ -31,11 +31,16 @@ import {
   ProofPanelLoadMoreButton,
 } from "./ProofPanel.styled";
 
-const ProofPanel = ({ reviews = [] }) => {
+const ProofPanel = ({ reviews = [], widget_settings = {} }) => {
   const [activeSource, setActiveSource] = React.useState("All Reviews");
   const [expandedReviews, setExpandedReviews] = React.useState({});
   const [isMobile, setIsMobile] = React.useState(false);
   const [visibleCount, setVisibleCount] = React.useState(18);
+
+  const mainBg = widget_settings.bg_color || undefined;
+  const txtColor = widget_settings.txt_color || undefined;
+  const fontFamily = widget_settings.font_family || undefined;
+  const starColor = widget_settings.star_color || '#fbbf24';
 
   React.useEffect(() => {
     const checkIsMobile = () => window.innerWidth < 640;
@@ -67,7 +72,7 @@ const ProofPanel = ({ reviews = [] }) => {
     for (let i = 0; i < 5; i++) {
       if (i < fullStars) {
         stars.push(
-          <span key={i} style={{ color: "#fbbf24", fontSize: 16 }}>
+          <span key={i} style={{ color: starColor, fontSize: 16 }}>
             ★
           </span>
         );
@@ -84,7 +89,7 @@ const ProofPanel = ({ reviews = [] }) => {
             <span style={{ color: "#e5e7eb" }}>★</span>
             <span
               style={{
-                color: "#fbbf24",
+                color: starColor,
                 position: "absolute",
                 left: 0,
                 top: 0,
@@ -176,7 +181,7 @@ const ProofPanel = ({ reviews = [] }) => {
   const hasMoreReviews = visibleCount < totalReviews;
 
   return (
-    <ProofPanelWrapper>
+    <ProofPanelWrapper style={{ background: mainBg, color: txtColor, fontFamily }}>
       <ProofPanelHeader>
         <ProofPanelTabsRow>
           {allSources.map((source) => {
@@ -261,8 +266,7 @@ const ProofPanel = ({ reviews = [] }) => {
                   />
                   <ProofPanelReviewerInfo>
                     <ProofPanelReviewerName>
-                      {review.customer_firstname}{" "}
-                      {review.customer_lastname || ""}
+                      {review.customer_firstname ? `${review.customer_firstname}${review.customer_lastname ? ' ' + review.customer_lastname : ''}` : ''}
                     </ProofPanelReviewerName>
                     <ProofPanelReviewerSource>
                       {new Date(review.review_date).toLocaleDateString(

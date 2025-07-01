@@ -12,13 +12,18 @@ export async function getServerReviews(apiId) {
     
     const data = await response.json();
     const reviewsData = data?.data?.reviews || [];
+    const widgetSettings = data?.data?.widget_settings || {};
     
     // Sort reviews by date
-    return reviewsData.sort(
+    const sortedReviews = reviewsData.sort(
       (a, b) => new Date(b.review_date) - new Date(a.review_date)
     );
+    return {
+      reviews: sortedReviews,
+      widget_settings: widgetSettings
+    };
   } catch (error) {
     console.error('Server-side review fetch error:', error);
-    return [];
+    return { reviews: [], widget_settings: {} };
   }
 } 

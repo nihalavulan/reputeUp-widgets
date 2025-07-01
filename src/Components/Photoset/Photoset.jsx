@@ -18,6 +18,7 @@ import {
   TextAreaContainer,
 } from "./Photoset.styled";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import Image from 'next/image';
 
 const getReviewPhotos = (review, index) => {
   if (review.photos && review.photos.length > 0) {
@@ -29,7 +30,7 @@ const getReviewPhotos = (review, index) => {
   );
 };
 
-const Photoset = ({ reviews = [] }) => {
+const Photoset = ({ reviews = [], widget_settings = {} }) => {
   const displayableReviews = reviews
     ? reviews.filter((r) => r.review_text && r.review_text.trim()).slice(0, 5)
     : [];
@@ -40,6 +41,10 @@ const Photoset = ({ reviews = [] }) => {
   const [isTruncated, setIsTruncated] = useState(false);
   const [modalImage, setModalImage] = useState(null);
   const [imageLoading, setImageLoading] = useState(false);
+
+  const mainBg = widget_settings.bg_color || undefined;
+  const txtColor = widget_settings.txt_color || undefined;
+  const fontFamily = widget_settings.font_family || undefined;
 
   const handlePrev = useCallback(() => {
     if (displayableReviews.length <= 1) return;
@@ -89,8 +94,8 @@ const Photoset = ({ reviews = [] }) => {
   const currentReviewPhotos = getReviewPhotos(review, current);
 
   return (
-    <Wrapper>
-      <Card>
+    <Wrapper style={{ background: mainBg, color: txtColor, fontFamily }}>
+      <Card style={{ background: mainBg, color: txtColor, fontFamily }}>
         <ReviewContainer>
           <ArrowLeft 
             onClick={handlePrev} 
@@ -137,7 +142,7 @@ const Photoset = ({ reviews = [] }) => {
 
             <AuthorRow>
               <AuthorName>
-                {review.customer_firstname || 'Anonymous'}{review.customer_lastname ? ` ${review.customer_lastname}` : ''}
+                {review.customer_firstname ? `${review.customer_firstname}${review.customer_lastname ? ' ' + review.customer_lastname : ''}` : ''}
               </AuthorName>
               {review.review_link && (
                 <ReviewLink href={review.review_link} target="_blank" rel="noopener noreferrer">
@@ -162,12 +167,19 @@ const Photoset = ({ reviews = [] }) => {
 
         <PhotoGrid>
           {currentReviewPhotos.map((photo, index) => (
-            <PhotoThumbnail
-              key={`${current}-${index}`}
-              src={photo}
-              alt={`Review photo ${index + 1}`}
-              onClick={() => handleThumbnailClick(photo)}
-            />
+            photo ? (
+              <Image
+                key={`${current}-${index}`}
+                src={photo}
+                alt={`Review photo ${index + 1}`}
+                width={80}
+                height={80}
+                style={{ borderRadius: '8px', objectFit: 'cover', cursor: 'pointer' }}
+                onClick={() => handleThumbnailClick(photo)}
+              />
+            ) : (
+              <div key={`${current}-${index}`} style={{ width: 80, height: 80, borderRadius: 8, background: '#eaeaea', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888' }}>No Image</div>
+            )
           ))}
         </PhotoGrid>
       </Card>
@@ -259,22 +271,18 @@ const Photoset = ({ reviews = [] }) => {
               </div>
             )}
             
-            <img 
-              src={modalImage} 
-              alt="Enlarged review" 
-              onLoad={handleImageLoad}
-              onError={handleImageError}
-              style={{ 
-                maxWidth: '100%', 
-                maxHeight: '100%', 
-                width: 'auto',
-                height: 'auto',
-                borderRadius: '8px', 
-                boxShadow: '0 4px 20px rgba(0,0,0,0.5)', 
-                objectFit: 'contain',
-                display: imageLoading ? 'none' : 'block'
-              }} 
-            />
+            {modalImage ? (
+              <Image
+                src={modalImage}
+                alt="Enlarged review"
+                width={600}
+                height={600}
+                style={{ maxWidth: '100%', maxHeight: '100%', width: 'auto', height: 'auto', borderRadius: '8px', boxShadow: '0 4px 20px rgba(0,0,0,0.5)', objectFit: 'contain', display: imageLoading ? 'none' : 'block' }}
+                onLoadingComplete={handleImageLoad}
+              />
+            ) : (
+              <div style={{ width: 600, height: 600, borderRadius: 8, background: '#eaeaea', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888' }}>No Image</div>
+            )}
           </div>
           
           <style>

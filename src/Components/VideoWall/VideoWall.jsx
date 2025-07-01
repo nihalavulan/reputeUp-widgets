@@ -136,8 +136,10 @@ const VideoCardComponent = ({
   );
 };
 
-const VideoWall = ({ reviews }) => {
-  const WIDGET_BG_COLOR = "#141414";
+const VideoWall = ({ reviews = [], widget_settings = {} }) => {
+  const WIDGET_BG_COLOR = widget_settings.bg_color || "#141414";
+  const txtColor = widget_settings.txt_color || undefined;
+  const fontFamily = widget_settings.font_family || undefined;
   const [playingVideo, setPlayingVideo] = useState(null);
   const [translateX, setTranslateX] = useState(0);
   
@@ -280,7 +282,7 @@ const VideoWall = ({ reviews }) => {
     <VideoWallWrapper 
       ref={wrapperRef} 
       {...swipeHandlers} 
-      bgColor={WIDGET_BG_COLOR}
+      style={{ background: WIDGET_BG_COLOR, color: txtColor, fontFamily }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

@@ -18,7 +18,7 @@ import {
 } from "./InlineSlider.styled";
 import { Icon } from "@iconify/react/dist/iconify.js";
 
-const InlineSlider = ({ apiId = "1749890233", reviews }) => {
+const InlineSlider = ({ apiId = "1749890233", reviews, widget_settings = {} }) => {
   const textReviews = reviews ? reviews.filter(r => r.review_text) : [];
   const [current, setCurrent] = useState(0);
   const [expanded, setExpanded] = useState(false);
@@ -53,8 +53,12 @@ const InlineSlider = ({ apiId = "1749890233", reviews }) => {
     faviconUrl = "";
   }
 
+  const mainBg = widget_settings.bg_color || undefined;
+  const txtColor = widget_settings.txt_color || undefined;
+  const fontFamily = widget_settings.font_family || undefined;
+
   return (
-    <Wrapper>
+    <Wrapper style={{ background: mainBg, color: txtColor, fontFamily }}>
       <Card expanded={expanded}>
         <ArrowLeft onClick={handlePrev}>
           <Icon icon="ic:round-chevron-left" width={28} height={28} />
