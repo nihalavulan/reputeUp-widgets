@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState, useMemo } from "react";
-import { ThemeProvider } from "styled-components";
 import {
   AnimatedWallMainWrapper,
   AnimatedWallContainer,
@@ -14,10 +13,7 @@ import {
   AnimatedWallStarsContainer,
   AnimatedWallLoadingWrapper,
   AnimatedWallErrorWrapper,
-  ThemeToggleButton,
   GlobalStyle,
-  lightTheme,
-  darkTheme,
 } from "./AnimatedWall.styled";
 import StarIcon from "../../assets/icons/Star";
 import Image from 'next/image';
@@ -30,13 +26,21 @@ const AnimatedWallStarRating = ({ rating }) => {
   return <AnimatedWallStarsContainer>{stars}</AnimatedWallStarsContainer>;
 };
 
-const AnimatedWallReviewCard = ({ review }) => {
+const AnimatedWallReviewCard = ({ review, cardBgColor, txtColor, fontFamily }) => {
+  const [expanded, setExpanded] = useState(false);
+  const charLimit = 180;
+  const isLong = review.review_text && review.review_text.length > charLimit;
+  const displayText = !expanded && isLong ? review.review_text.slice(0, charLimit) + '...' : review.review_text;
+
   return (
-    <AnimatedWallCard>
+    <AnimatedWallCard 
+      expanded={expanded}
+      style={{ background: cardBgColor, color: txtColor, fontFamily }}
+    >
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
         <AnimatedWallAuthorImage 
           as={Image}
-          src={review?.author_pic || review?.customer_photo || `https://ui-avatars.com/api/?name=${encodeURIComponent((review.customer_firstname?.[0] || review.author_name?.[0] || 'A').toUpperCase())}&background=random`} 
+          src={review?.author_pic || review?.customer_photo || `https://ui-avatars.com/api/?name=${encodeURIComponent((review.customer_firstname?.[0] || 'A').toUpperCase())}&background=random`} 
           alt="Author" 
           width={40}
           height={40}
@@ -46,14 +50,33 @@ const AnimatedWallReviewCard = ({ review }) => {
           <AnimatedWallAuthorName>
             {review.customer_firstname ? `${review.customer_firstname}${review.customer_lastname ? ' ' + review.customer_lastname : ''}` : ''}
           </AnimatedWallAuthorName>
-          <AnimatedWallAuthorDesignation>
-            {review.author_designation || review.work_title || 'Customer'}
-          </AnimatedWallAuthorDesignation>
+          {review.author_designation || review.work_title ? (
+            <AnimatedWallAuthorDesignation>
+              {review.author_designation || review.work_title}
+            </AnimatedWallAuthorDesignation>
+          ) : null}
         </AnimatedWallAuthorDetails>
       </div>
-      
-      <AnimatedWallReviewText>
-        {review.review_text}
+      <AnimatedWallReviewText style={expanded ? { overflow: 'visible', display: 'block', maxHeight: 'none' } : {}}>
+        {displayText}
+        {isLong && (
+          <button
+            onClick={() => setExpanded(e => !e)}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#1976d2',
+              fontSize: '13px',
+              cursor: 'pointer',
+              padding: 0,
+              marginLeft: 6,
+              textDecoration: 'underline',
+              fontWeight: 500,
+            }}
+          >
+            {expanded ? 'Read less' : 'Read more'}
+          </button>
+        )}
       </AnimatedWallReviewText>
     </AnimatedWallCard>
   );
@@ -61,16 +84,12 @@ const AnimatedWallReviewCard = ({ review }) => {
 
 const AnimatedWall = ({ apiId = "1749890233", reviews, widget_settings = {} }) => {
   const [columnsCount, setColumnsCount] = useState(3);
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    // Check for saved theme preference or default to light mode
-    const savedTheme = localStorage.getItem('animatedWallTheme');
-    return savedTheme === 'dark';
-  });
 
-  // Save theme preference to localStorage
-  useEffect(() => {
-    localStorage.setItem('animatedWallTheme', isDarkMode ? 'dark' : 'light');
-  }, [isDarkMode]);
+  // Use widget_settings for all theme values
+  const mainBg = widget_settings.bg_color || '#fff';
+  const txtColor = widget_settings.txt_color || '#000';
+  const fontFamily = widget_settings.font_family || 'Roboto, Arial, sans-serif';
+  const cardBgColor = widget_settings.card_bg_color || '#fff';
 
   // Hook to handle screen size changes
   useEffect(() => {
@@ -84,17 +103,11 @@ const AnimatedWall = ({ apiId = "1749890233", reviews, widget_settings = {} }) =
         setColumnsCount(3); // Desktop: 3 columns
       }
     };
-
-    // Set initial value
     handleResize();
-
-    // Add event listener
     window.addEventListener('resize', handleResize);
-
-    // Cleanup
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-  
+
   // Filter reviews to only include those with review_text
   const filteredReviews = useMemo(() => {
     return reviews.filter(review => review.review_text && review.review_text.trim().length > 0);
@@ -106,47 +119,27 @@ const AnimatedWall = ({ apiId = "1749890233", reviews, widget_settings = {} }) =
     filteredReviews.forEach((review, index) => {
       rows[index % columnsCount].push(review);
     });
-    
     // Duplicate reviews to ensure smooth infinite scrolling
     return rows.map(row => [...row, ...row, ...row]);
   }, [filteredReviews, columnsCount]);
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
-
-  // Use widget_settings for theme overrides
-  const customTheme = {
-    ...((isDarkMode ? darkTheme : lightTheme)),
-    background: widget_settings.bg_color || (isDarkMode ? darkTheme.background : lightTheme.background),
-    textPrimary: widget_settings.txt_color || (isDarkMode ? darkTheme.textPrimary : lightTheme.textPrimary),
-    fontFamily: widget_settings.font_family || 'Roboto, Arial, sans-serif',
-    starColor: widget_settings.star_color || '#FFD700',
-  };
-
   if (filteredReviews.length === 0) {
     return (
-      <ThemeProvider theme={customTheme}>
+      <>
         <GlobalStyle />
-        <AnimatedWallMainWrapper style={{ fontFamily: customTheme.fontFamily }}>
-          <ThemeToggleButton onClick={toggleTheme}>
-            {isDarkMode ? '☀️' : '🌙'}
-          </ThemeToggleButton>
+        <AnimatedWallMainWrapper bgColor={mainBg} style={{ color: txtColor, fontFamily }}>
           <AnimatedWallErrorWrapper>
             No reviews with text found
           </AnimatedWallErrorWrapper>
         </AnimatedWallMainWrapper>
-      </ThemeProvider>
+      </>
     );
   }
 
   return (
-    <ThemeProvider theme={customTheme}>
+    <>
       <GlobalStyle />
-      <AnimatedWallMainWrapper style={{ fontFamily: customTheme.fontFamily }}>
-        <ThemeToggleButton onClick={toggleTheme}>
-          {isDarkMode ? '☀️' : '🌙'}
-        </ThemeToggleButton>
+      <AnimatedWallMainWrapper bgColor={mainBg} style={{ color: txtColor, fontFamily }}>
         <AnimatedWallContainer columnsCount={columnsCount}>
           {reviewRows.map((rowReviews, rowIndex) => (
             <AnimatedWallRow 
@@ -157,13 +150,16 @@ const AnimatedWall = ({ apiId = "1749890233", reviews, widget_settings = {} }) =
                 <AnimatedWallReviewCard
                   key={`${review.id}-${cardIndex}`}
                   review={review}
+                  cardBgColor={cardBgColor}
+                  txtColor={txtColor}
+                  fontFamily={fontFamily}
                 />
               ))}
             </AnimatedWallRow>
           ))}
         </AnimatedWallContainer>
       </AnimatedWallMainWrapper>
-    </ThemeProvider>
+    </>
   );
 };
 

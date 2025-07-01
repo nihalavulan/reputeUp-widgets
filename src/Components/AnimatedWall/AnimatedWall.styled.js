@@ -126,7 +126,7 @@ export const AnimatedWallMainWrapper = styled.div`
   width: 100%;
   height: 100vh;
   overflow: hidden;
-  background: ${props => props.theme.background};
+  background: ${({ bgColor }) => bgColor || '#fff'};
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   position: relative;
 
@@ -137,7 +137,7 @@ export const AnimatedWallMainWrapper = styled.div`
     left: 0;
     right: 0;
     height: 20vh;
-    background: ${props => props.theme.gradientTop};
+    background: ${({ bgColor }) => `linear-gradient(180deg, ${bgColor || '#fff'} 0%, ${bgColor || '#fff'}E6 30%, ${bgColor || '#fff'}B3 60%, ${bgColor || '#fff'}00 100%)`};
     z-index: 10;
     pointer-events: none;
   }
@@ -149,7 +149,7 @@ export const AnimatedWallMainWrapper = styled.div`
     left: 0;
     right: 0;
     height: 20vh;
-    background: ${props => props.theme.gradientBottom};
+    background: ${({ bgColor }) => `linear-gradient(0deg, ${bgColor || '#fff'} 0%, ${bgColor || '#fff'}E6 30%, ${bgColor || '#fff'}B3 60%, ${bgColor || '#fff'}00 100%)`};
     z-index: 10;
     pointer-events: none;
   }
@@ -200,7 +200,7 @@ export const AnimatedWallRow = styled.div`
 export const AnimatedWallCard = styled.div`
   width: 100%;
   max-width: 400px;
-  min-height: 200px;
+  min-height: ${({ expanded }) => (expanded ? 'unset' : '200px')};
   height: auto;
   background: ${props => props.theme.cardBackground};
   border-radius: 12px;
@@ -227,12 +227,12 @@ export const AnimatedWallCard = styled.div`
     max-width: 100%;
     padding: 16px;
     border-radius: 8px;
-    min-height: 180px;
+    min-height: ${({ expanded }) => (expanded ? 'unset' : '180px')};
   }
 
   @media (max-width: 480px) {
     padding: 14px;
-    min-height: 160px;
+    min-height: ${({ expanded }) => (expanded ? 'unset' : '160px')};
   }
 `;
 
