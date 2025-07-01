@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import InlineSlider from '@/Components/InlineSlider/InlineSlider'
 import { getServerReviews } from '@/services/serverReviewService'
 

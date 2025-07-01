@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import CardDeck from '@/Components/CardDeck'
 import { getServerReviews } from '@/services/serverReviewService'
 

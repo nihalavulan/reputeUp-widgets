@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import List from '@/Components/List/List'
 import { getServerReviews } from '@/services/serverReviewService'
 

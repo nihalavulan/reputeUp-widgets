@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import WidgetDetails from '@/Components/WidgetDetails/WidgetDetails'
 import { getServerReviews } from '@/services/serverReviewService'
 

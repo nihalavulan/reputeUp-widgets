@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import ProofPanel from '@/Components/ProofPanel/ProofPanel'
 import { getServerReviews } from '@/services/serverReviewService'
 

@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import Grid from '@/Components/Grid'
 import { getServerReviews } from '@/services/serverReviewService'
 

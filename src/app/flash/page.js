@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import Flash from '@/Components/flash/Flash'
 import { getServerReviews } from '@/services/serverReviewService'
 

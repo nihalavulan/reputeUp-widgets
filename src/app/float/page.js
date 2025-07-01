@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import Float from '@/Components/float/Float'
 import { getServerReviews } from '@/services/serverReviewService'
 

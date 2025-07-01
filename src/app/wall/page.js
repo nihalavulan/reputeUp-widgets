@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import Wall from '@/Components/Wall/Wall'
 import { getServerReviews } from '@/services/serverReviewService'
 

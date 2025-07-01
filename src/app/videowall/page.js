@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import VideoWall from '@/Components/VideoWall/VideoWall'
 import { getServerReviews } from '@/services/serverReviewService'
 

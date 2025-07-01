@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import Photoset from '@/Components/Photoset/Photoset'
 import { getServerReviews } from '@/services/serverReviewService'
 

@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import ReviewBlock from '@/Components/ReviewBlock/ReviewBlock'
 import { getServerReviews } from '@/services/serverReviewService'
 
