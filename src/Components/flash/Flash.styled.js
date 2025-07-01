@@ -102,6 +102,7 @@ export const FlashAuthor = styled.div`
   align-items: center;
   gap: 8px;
   flex: 1;
+  max-width: 10%;
 
   img, .avatar-placeholder {
     width: 28px;
