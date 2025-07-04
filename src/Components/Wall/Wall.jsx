@@ -33,6 +33,7 @@ import {
 import { Icon } from "@iconify/react";
 import StarIcon from "../../assets/icons/Star";
 import { LoadMoreButton } from "./Wall.styles";
+import Image from 'next/image';
 
 const useIframeResize = () => {
   const triggerResize = useCallback(() => {
@@ -122,7 +123,35 @@ const ReviewCard = React.memo(({ review, onImageLoad, renderStars }) => {
         <StyledBodyHeadersWrapper>
           <StyledBodyHeader>
             <StyledBodyAuthorDetailsWrapper>
-              <img src={review?.author_pic || review?.customer_photo} alt="" />
+              {(review?.author_pic || review?.customer_photo) ? (
+                <Image
+                  src={review?.author_pic || review?.customer_photo}
+                  alt="author"
+                  width={40}
+                  height={40}
+                  style={{ borderRadius: '50%', objectFit: 'cover' }}
+                />
+              ) : (
+                <div style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: '50%',
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  color: 'white',
+                  fontWeight: 600,
+                  fontSize: 18,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: 10
+                }}>
+                  {(
+                    review.customer_firstname?.[0] ||
+                    review.author_name?.[0] ||
+                    'A'
+                  ).toUpperCase()}
+                </div>
+              )}
               <div>
                 <h3>{review.customer_firstname ? `${review.customer_firstname}${review.customer_lastname ? ' ' + review.customer_lastname : ''}` : ''}</h3>
                 <h6>
