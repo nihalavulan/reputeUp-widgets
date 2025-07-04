@@ -49,12 +49,4 @@ export const ReviewBlockText = styled.p`
   margin: 4px 0 0;
   color: #555;
   font-size: 14px;
-`;
-
-export const LoadingWrapper = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100px;
-    font-family: sans-serif;
 `; 

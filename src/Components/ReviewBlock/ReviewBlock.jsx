@@ -8,9 +8,9 @@ import {
   ReviewBlockText,
   ReviewBlockAvatars,
   AvatarImage,
-  LoadingWrapper,
 } from './ReviewBlock.styled';
 import Image from 'next/image';
+import Loading from '../Common/Loading';
 
 const ReviewBlock = ({ apiId = '1749890233', reviews, widget_settings = {} }) => {
   if (!reviews || reviews.length === 0) {

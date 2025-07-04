@@ -11,12 +11,12 @@ import {
   AnimatedWallAuthorDesignation,
   AnimatedWallReviewText,
   AnimatedWallStarsContainer,
-  AnimatedWallLoadingWrapper,
   AnimatedWallErrorWrapper,
   GlobalStyle,
 } from "./AnimatedWall.styled";
 import StarIcon from "../../assets/icons/Star";
 import Image from 'next/image';
+import Loading from '../Common/Loading';
 
 const AnimatedWallStarRating = ({ rating }) => {
   const stars = [];

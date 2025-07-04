@@ -22,6 +22,7 @@ import {
 import StarIcon from "../../assets/icons/Star";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Image from 'next/image';
+import Loading from '../Common/Loading';
 
 const useIframeResize = () => {
   const triggerResize = useCallback(() => {

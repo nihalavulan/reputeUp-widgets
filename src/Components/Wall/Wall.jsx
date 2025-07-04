@@ -4,11 +4,6 @@ import React, { useEffect, useState, useCallback, useMemo } from "react";
 import Masonry from "react-masonry-css";
 import {
   StyledWallMainWrapper,
-  LoadingWrapper,
-  LoadingSpinner,
-  LoadingText,
-  LoadingSubtext,
-  LoadingDots,
   ErrorWrapper,
   EmptyStateWrapper,
   MasonryGridStyles,
@@ -34,6 +29,7 @@ import { Icon } from "@iconify/react";
 import StarIcon from "../../assets/icons/Star";
 import { LoadMoreButton } from "./Wall.styles";
 import Image from 'next/image';
+import Loading from '../Common/Loading';
 
 const useIframeResize = () => {
   const triggerResize = useCallback(() => {

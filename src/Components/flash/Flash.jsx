@@ -16,6 +16,7 @@ import {
 } from "./Flash.styled";
 import StarIcon from "../../assets/icons/Star";
 import Image from 'next/image';
+import Loading from '../Common/Loading';
 
 const useIframeResize = () => {
   const triggerResize = useCallback(() => {

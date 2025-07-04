@@ -12,11 +12,11 @@ import {
   ListRightMeta,
   ListIcon,
   ReadMoreToggle,
-  LoadMoreButton,
-  LoadingWrapper
+  LoadMoreButton
 } from "./List.styled";
 import StarIcon from "../../assets/icons/Star";
 import Image from 'next/image';
+import Loading from '../Common/Loading';
 
 const BATCH_SIZE = 8;
 

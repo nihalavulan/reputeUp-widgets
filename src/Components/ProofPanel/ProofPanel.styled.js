@@ -253,13 +253,6 @@ export const ProofPanelReviewerSource = styled.div`
   margin-top: 1px;
 `;
 
-export const ProofPanelLoading = styled.div`
-  text-align: center;
-  padding: 80px 20px;
-  color: #6b7280;
-  font-size: 16px;
-`;
-
 export const ProofPanelError = styled.div`
   text-align: center;
   padding: 80px 20px;

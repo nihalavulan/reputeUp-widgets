@@ -136,14 +136,3 @@ export const LoadMoreButton = styled.button`
     background-color: #a3a3a3;
   }
 `;
-
-export const LoadingWrapper = styled.div`
-  width: 100%;
-  height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  font-weight: 500;
-  color: #555;
-`;

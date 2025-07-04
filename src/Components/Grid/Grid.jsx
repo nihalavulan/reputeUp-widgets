@@ -18,6 +18,7 @@ import {
 import StarIcon from "../../assets/icons/Star";
 import { Icon } from "@iconify/react";
 import Image from 'next/image';
+import Loading from '../Common/Loading';
 
 const ITEMS_PER_PAGE = 12;
 

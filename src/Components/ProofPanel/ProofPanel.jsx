@@ -25,11 +25,11 @@ import {
   ProofPanelStarsContainer,
   ProofPanelReviewText,
   ProofPanelReadMore,
-  ProofPanelLoading,
   ProofPanelError,
   ProofPanelLoadMoreContainer,
   ProofPanelLoadMoreButton,
 } from "./ProofPanel.styled";
+import Loading from '../Common/Loading';
 
 const ProofPanel = ({ reviews = [], widget_settings = {} }) => {
   const [activeSource, setActiveSource] = React.useState("All Reviews");
@@ -128,7 +128,7 @@ const ProofPanel = ({ reviews = [], widget_settings = {} }) => {
   }, [activeSource, isMobile]);
 
   if (!reviewsWithText || reviewsWithText.length === 0)
-    return <ProofPanelLoading>No reviews yet</ProofPanelLoading>;
+    return <Loading>No reviews yet</Loading>;
 
   const grouped = groupByPlatform(reviewsWithText);
   const allSources = ["All Reviews", ...Object.keys(grouped)];

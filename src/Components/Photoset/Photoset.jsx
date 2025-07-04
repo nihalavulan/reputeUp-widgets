@@ -19,6 +19,7 @@ import {
 } from "./Photoset.styled";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Image from 'next/image';
+import Loading from '../Common/Loading';
 
 const getReviewPhotos = (review, index) => {
   if (review.photos && review.photos.length > 0) {
@@ -245,30 +246,7 @@ const Photoset = ({ reviews = [], widget_settings = {} }) => {
             </button>
             
             {imageLoading && (
-              <div 
-                style={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  color: 'white',
-                  fontSize: '16px',
-                  zIndex: 1000001
-                }}
-              >
-                <div 
-                  style={{
-                    border: '3px solid rgba(255,255,255,0.3)',
-                    borderTop: '3px solid white',
-                    borderRadius: '50%',
-                    width: '40px',
-                    height: '40px',
-                    animation: 'spin 1s linear infinite',
-                    margin: '0 auto 10px'
-                  }}
-                />
-                <div>Loading...</div>
-              </div>
+              <Loading text="Loading image..." minHeight={80} />
             )}
             
             {modalImage ? (
@@ -284,15 +262,6 @@ const Photoset = ({ reviews = [], widget_settings = {} }) => {
               <div style={{ width: 600, height: 600, borderRadius: 8, background: '#eaeaea', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888' }}>No Image</div>
             )}
           </div>
-          
-          <style>
-            {`
-              @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-              }
-            `}
-          </style>
         </div>
       )}
     </Wrapper>

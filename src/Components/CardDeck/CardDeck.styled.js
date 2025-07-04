@@ -264,19 +264,6 @@ export const CardDeckAvatar = styled.img`
   }
 `;
 
-export const CardDeckLoading = styled.div`
-  padding: 60px;
-  text-align: center;
-  color: #4a5568;
-  font-size: 18px;
-  font-weight: 500;
-  
-  @media (max-width: 768px) {
-    padding: 40px 20px;
-    font-size: 16px;
-  }
-`;
-
 export const CardDeckError = styled.div`
   padding: 60px;
   text-align: center;

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCards } from 'swiper/modules';
 import Image from 'next/image';
+import Loading from '../Common/Loading';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -16,7 +17,6 @@ import {
   CardDeckAvatar,
   CardDeckAuthorInfo,
   CardDeckReviewText,
-  CardDeckLoading,
   CardDeckError
 } from "./CardDeck.styled";
 
@@ -45,7 +45,7 @@ const CardDeck = ({ reviews = [], widget_settings = {} }) => {
   const fontFamily = widget_settings.font_family || undefined;
 
   if (!limitedReviews || limitedReviews.length === 0) {
-    return <CardDeckLoading>No reviews available</CardDeckLoading>;
+    return <Loading />;
   }
 
   return (
