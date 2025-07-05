@@ -15,57 +15,6 @@ import {
 } from "./VideoWall.styled";
 import { Icon } from "@iconify/react";
 
-const mockData = [
-  {
-    id: 1,
-    videoUrl: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
-    title: "Diamond Aesthetics",
-    quote: "I see consistent profit month after month. No stress.",
-  },
-  {
-    id: 2,
-    videoUrl: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
-    title: "North Central Massage & Aesthetics",
-    quote: "Zoca helped me go from 2 leads a week to over 30.",
-  },
-  {
-    id: 3,
-    videoUrl: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
-    title: "Red Chair Salon",
-    quote: "My calendar's full, my phone's buzzing, without a single ad.",
-  },
-  {
-    id: 4,
-    videoUrl: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
-    title: "Natura Spa",
-    quote: "400 leads in two months. At least one new client every day.",
-  },
-  {
-    id: 5,
-    videoUrl: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-    title: "Diamond Aesthetics 2",
-    quote: "I see consistent profit month after month. No stress.",
-  },
-  {
-    id: 6,
-    videoUrl: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
-    title: "Red Chair Salon 2",
-    quote: "My calendar's full, my phone's buzzing, without a single ad.",
-  },
-  {
-    id: 7,
-    videoUrl: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
-    title: "Natura Spa 2",
-    quote: "400 leads in two months. At least one new client every day.",
-  },
-  {
-    id: 8,
-    videoUrl: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-    title: "Diamond Aesthetics 3",
-    quote: "I see consistent profit month after month. No stress.",
-  },
-];
-
 const VideoCardComponent = ({
   video,
   isPlaying,
@@ -136,6 +85,19 @@ const VideoCardComponent = ({
   );
 };
 
+// Transform reviews prop to video card data
+const getVideoData = (reviews) => {
+  if (!Array.isArray(reviews) || reviews.length === 0) return [];
+  return reviews
+    .filter(r => r.video_path)
+    .map((r, idx) => ({
+      id: idx + 1,
+      videoUrl: r.video_path,
+      title: r.author_name || "Untitled",
+      quote: r.review_text || r.review_title || "",
+    }));
+};
+
 const VideoWall = ({ reviews = [], widget_settings = {} }) => {
   const WIDGET_BG_COLOR = widget_settings.bg_color || "#141414";
   const txtColor = widget_settings.txt_color || undefined;
@@ -150,19 +112,22 @@ const VideoWall = ({ reviews = [], widget_settings = {} }) => {
   const autoScrollRef = useRef(null);
   const startTranslateX = useRef(0);
 
+  // Use reviews data instead of mockData
+  const videoData = useMemo(() => getVideoData(reviews), [reviews]);
+
   // Duplicate videos for infinite scroll
   const duplicatedVideos = useMemo(() => {
     // Create 3 sets of videos for smooth infinite scroll
-    const videos = [...mockData, ...mockData, ...mockData];
+    const videos = [...videoData, ...videoData, ...videoData];
     return videos.map((video, index) => ({
       ...video,
       uniqueId: `${video.id}-${index}`
     }));
-  }, []);
+  }, [videoData]);
 
   // Card dimensions
   const CARD_WIDTH = 330; // 300px + 30px margin
-  const ORIGINAL_SET_WIDTH = mockData.length * CARD_WIDTH;
+  const ORIGINAL_SET_WIDTH = videoData.length * CARD_WIDTH;
 
   const stopAutoScroll = useCallback(() => {
     if (autoScrollRef.current) {
