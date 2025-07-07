@@ -21,7 +21,7 @@ import {
   CardDeckError
 } from "./CardDeck.styled";
 
-const CardDeck = ({ reviews = [], widget_settings = {} }) => {
+const CardDeck = ({ reviews = [], widget_settings = {}, widgetId }) => {
   const [swiper, setSwiper] = useState(null);
   
   const reviewsWithText = reviews
@@ -102,7 +102,7 @@ const CardDeck = ({ reviews = [], widget_settings = {} }) => {
         right: '20px',
         zIndex: 1000
       }}>
-        <ReputeUpFooter widget_settings={widget_settings} size="small" />
+        <ReputeUpFooter widget_settings={widget_settings} size="small" widgetId={widgetId} />
       </div>
     </CardDeckWrapper>
   );

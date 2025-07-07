@@ -46,7 +46,7 @@ const getFaviconUrl = (review_link) => {
   return "";
 };
 
-const Grid = ({ apiId = "1749890233", reviews, widget_settings = {} }) => {
+const Grid = ({ apiId = "1749890233", reviews, widget_settings = {}, widgetId }) => {
   const [modalReview, setModalReview] = useState(null);
   const [displayedCount, setDisplayedCount] = useState(ITEMS_PER_PAGE);
   const modalRef = useRef(null);
@@ -215,7 +215,7 @@ const Grid = ({ apiId = "1749890233", reviews, widget_settings = {} }) => {
           </ModalContent>
         </ModalOverlay>
       )}
-      <ReputeUpFooter widget_settings={widget_settings} />
+      <ReputeUpFooter widget_settings={widget_settings} widgetId={widgetId} />
     </>
   );
 };

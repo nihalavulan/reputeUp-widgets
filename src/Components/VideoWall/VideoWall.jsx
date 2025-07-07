@@ -146,7 +146,7 @@ const getVideoData = (reviews) => {
     }));
 };
 
-const VideoWall = ({ reviews = [], widget_settings = {} }) => {
+const VideoWall = ({ reviews = [], widget_settings = {}, widgetId }) => {
   const WIDGET_BG_COLOR = widget_settings.bg_color || "#141414";
   const txtColor = widget_settings.txt_color || undefined;
   const fontFamily = widget_settings.font_family || undefined;
@@ -325,7 +325,7 @@ const VideoWall = ({ reviews = [], widget_settings = {} }) => {
           />
         ))}
       </VideoWallContainer>
-      <ReputeUpFooter widget_settings={widget_settings} />
+      <ReputeUpFooter widget_settings={widget_settings} widgetId={widgetId} />
     </VideoWallWrapper>
   );
 };

@@ -32,7 +32,7 @@ import {
 import Loading from '../Common/Loading';
 import ReputeUpFooter from '../Common/ReputeUpFooter';
 
-const ProofPanel = ({ reviews = [], widget_settings = {} }) => {
+const ProofPanel = ({ reviews = [], widget_settings = {}, widgetId }) => {
   const [activeSource, setActiveSource] = React.useState("All Reviews");
   const [expandedReviews, setExpandedReviews] = React.useState({});
   const [isMobile, setIsMobile] = React.useState(false);
@@ -294,7 +294,7 @@ const ProofPanel = ({ reviews = [], widget_settings = {} }) => {
           </ProofPanelLoadMoreButton>
         </ProofPanelLoadMoreContainer>
       )}
-      <ReputeUpFooter widget_settings={widget_settings} />
+      <ReputeUpFooter widget_settings={widget_settings} widgetId={widgetId} />
     </ProofPanelWrapper>
   );
 };

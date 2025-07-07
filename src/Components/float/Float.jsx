@@ -46,7 +46,7 @@ const QuoteIcon = () => (
 //   <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10h12" stroke="#888" strokeWidth="2" strokeLinecap="round"/></svg>
 // );
 
-const Float = ({ reviews = [], widget_settings = {} }) => {
+const Float = ({ reviews = [], widget_settings = {}, widgetId }) => {
   const triggerResize = useIframeResize();
   
   // Get URL parameters
@@ -349,7 +349,7 @@ const Float = ({ reviews = [], widget_settings = {} }) => {
           right: '20px',
           zIndex: 1000
         }}>
-          <ReputeUpFooter widget_settings={widget_settings} size="small" />
+          <ReputeUpFooter widget_settings={widget_settings} size="small" widgetId={widgetId} />
         </div>
       </FloatCard>
     </FloatWrapper>

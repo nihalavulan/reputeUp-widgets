@@ -32,5 +32,5 @@ export default async function WidgetByIdPage({ params }) {
     );
   }
 
-  return <WidgetComponent reviews={reviews} widget_settings={widget_settings} />;
+  return <WidgetComponent reviews={reviews} widget_settings={widget_settings} widgetId={id} />;
 } 

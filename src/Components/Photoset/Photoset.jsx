@@ -32,7 +32,7 @@ const getReviewPhotos = (review, index) => {
   );
 };
 
-const Photoset = ({ reviews = [], widget_settings = {} }) => {
+const Photoset = ({ reviews = [], widget_settings = {}, widgetId }) => {
   const displayableReviews = reviews
     ? reviews.filter((r) => r.review_text && r.review_text.trim()).slice(0, 5)
     : [];
@@ -265,7 +265,7 @@ const Photoset = ({ reviews = [], widget_settings = {} }) => {
           </div>
         </div>
       )}
-      <ReputeUpFooter widget_settings={widget_settings} />
+      <ReputeUpFooter widget_settings={widget_settings} widgetId={widgetId} />
     </Wrapper>
   );
 };

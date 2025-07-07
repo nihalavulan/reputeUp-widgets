@@ -200,7 +200,7 @@ const ReviewCard = React.memo(({ review, onImageLoad, renderStars }) => {
 
 ReviewCard.displayName = "ReviewCard";
 
-const Wall = ({ reviews = [], widget_settings = {} }) => {
+const Wall = ({ reviews = [], widget_settings = {}, widgetId }) => {
   const triggerResize = useIframeResize();
   
   // Pagination state
@@ -295,7 +295,7 @@ const Wall = ({ reviews = [], widget_settings = {} }) => {
             Load More Reviews ({reviews.length - displayedCount} remaining)
           </LoadMoreButton>
         )}
-        <ReputeUpFooter widget_settings={widget_settings} />
+        <ReputeUpFooter widget_settings={widget_settings} widgetId={widgetId} />
       </StyledWallMainWrapper>
     </>
   );

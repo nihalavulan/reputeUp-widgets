@@ -29,7 +29,7 @@ const useIframeResize = () => {
   return triggerResize;
 };
 
-const Flash = ({ reviews = [], widget_settings = {} }) => {
+const Flash = ({ reviews = [], widget_settings = {}, widgetId }) => {
   const triggerResize = useIframeResize();
   
   // Get URL parameters
@@ -314,7 +314,7 @@ const Flash = ({ reviews = [], widget_settings = {} }) => {
           right: '20px',
           zIndex: 1000
         }}>
-          <ReputeUpFooter widget_settings={widget_settings} size="small" />
+          <ReputeUpFooter widget_settings={widget_settings} size="small" widgetId={widgetId} />
         </div>
       </FlashCard>
     </FlashWrapper>

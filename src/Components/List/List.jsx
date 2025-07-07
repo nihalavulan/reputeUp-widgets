@@ -21,7 +21,7 @@ import ReputeUpFooter from '../Common/ReputeUpFooter';
 
 const BATCH_SIZE = 8;
 
-const List = ({ apiId = "1749890233", reviews, widget_settings = {} }) => {
+const List = ({ apiId = "1749890233", reviews, widget_settings = {}, widgetId }) => {
   const [expandedIds, setExpandedIds] = useState([]);
   const [overflowMap, setOverflowMap] = useState({});
   const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
@@ -143,7 +143,7 @@ const List = ({ apiId = "1749890233", reviews, widget_settings = {} }) => {
           Load More
         </LoadMoreButton>
       )}
-      <ReputeUpFooter widget_settings={widget_settings} />
+      <ReputeUpFooter widget_settings={widget_settings} widgetId={widgetId} />
     </ListWrapper>
   );
 };

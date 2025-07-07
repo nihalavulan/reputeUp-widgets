@@ -83,7 +83,7 @@ const AnimatedWallReviewCard = ({ review, cardBgColor, txtColor, fontFamily }) =
   );
 };
 
-const AnimatedWall = ({ apiId = "1749890233", reviews, widget_settings = {} }) => {
+const AnimatedWall = ({ apiId = "1749890233", reviews, widget_settings = {}, widgetId }) => {
   const [columnsCount, setColumnsCount] = useState(3);
 
   // Use widget_settings for all theme values
@@ -174,7 +174,7 @@ const AnimatedWall = ({ apiId = "1749890233", reviews, widget_settings = {} }) =
           right: '20px',
           zIndex: 1000
         }}>
-          <ReputeUpFooter widget_settings={widget_settings} />
+          <ReputeUpFooter widget_settings={widget_settings} widgetId={widgetId} />
         </div>
       </div>
     </>
