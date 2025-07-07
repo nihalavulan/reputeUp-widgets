@@ -23,6 +23,7 @@ import StarIcon from "../../assets/icons/Star";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Image from 'next/image';
 import Loading from '../Common/Loading';
+import ReputeUpFooter from '../Common/ReputeUpFooter';
 
 const useIframeResize = () => {
   const triggerResize = useCallback(() => {
@@ -342,6 +343,14 @@ const Float = ({ reviews = [], widget_settings = {} }) => {
           </FloatFooter>
          </div>
         </FloatContent>
+        <div style={{
+          position: 'absolute',
+          bottom: '20px',
+          right: '20px',
+          zIndex: 1000
+        }}>
+          <ReputeUpFooter widget_settings={widget_settings} size="small" />
+        </div>
       </FloatCard>
     </FloatWrapper>
   );

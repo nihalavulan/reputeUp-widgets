@@ -30,6 +30,7 @@ import {
   ProofPanelLoadMoreButton,
 } from "./ProofPanel.styled";
 import Loading from '../Common/Loading';
+import ReputeUpFooter from '../Common/ReputeUpFooter';
 
 const ProofPanel = ({ reviews = [], widget_settings = {} }) => {
   const [activeSource, setActiveSource] = React.useState("All Reviews");
@@ -293,6 +294,7 @@ const ProofPanel = ({ reviews = [], widget_settings = {} }) => {
           </ProofPanelLoadMoreButton>
         </ProofPanelLoadMoreContainer>
       )}
+      <ReputeUpFooter widget_settings={widget_settings} />
     </ProofPanelWrapper>
   );
 };

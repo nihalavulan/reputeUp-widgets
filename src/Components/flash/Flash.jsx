@@ -17,6 +17,7 @@ import {
 import StarIcon from "../../assets/icons/Star";
 import Image from 'next/image';
 import Loading from '../Common/Loading';
+import ReputeUpFooter from '../Common/ReputeUpFooter';
 
 const useIframeResize = () => {
   const triggerResize = useCallback(() => {
@@ -307,6 +308,14 @@ const Flash = ({ reviews = [], widget_settings = {} }) => {
             ))}
           </FlashIndicators>
         )}
+        <div style={{
+          position: 'absolute',
+          bottom: '20px',
+          right: '20px',
+          zIndex: 1000
+        }}>
+          <ReputeUpFooter widget_settings={widget_settings} size="small" />
+        </div>
       </FlashCard>
     </FlashWrapper>
   );

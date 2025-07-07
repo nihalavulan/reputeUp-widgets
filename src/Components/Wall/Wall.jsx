@@ -30,6 +30,7 @@ import StarIcon from "../../assets/icons/Star";
 import { LoadMoreButton } from "./Wall.styles";
 import Image from 'next/image';
 import Loading from '../Common/Loading';
+import ReputeUpFooter from '../Common/ReputeUpFooter';
 
 const useIframeResize = () => {
   const triggerResize = useCallback(() => {
@@ -294,6 +295,7 @@ const Wall = ({ reviews = [], widget_settings = {} }) => {
             Load More Reviews ({reviews.length - displayedCount} remaining)
           </LoadMoreButton>
         )}
+        <ReputeUpFooter widget_settings={widget_settings} />
       </StyledWallMainWrapper>
     </>
   );

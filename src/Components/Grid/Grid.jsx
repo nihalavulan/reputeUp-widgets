@@ -19,6 +19,7 @@ import StarIcon from "../../assets/icons/Star";
 import { Icon } from "@iconify/react";
 import Image from 'next/image';
 import Loading from '../Common/Loading';
+import ReputeUpFooter from '../Common/ReputeUpFooter';
 
 const ITEMS_PER_PAGE = 12;
 
@@ -214,6 +215,7 @@ const Grid = ({ apiId = "1749890233", reviews, widget_settings = {} }) => {
           </ModalContent>
         </ModalOverlay>
       )}
+      <ReputeUpFooter widget_settings={widget_settings} />
     </>
   );
 };

@@ -20,6 +20,7 @@ import {
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Image from 'next/image';
 import Loading from '../Common/Loading';
+import ReputeUpFooter from '../Common/ReputeUpFooter';
 
 const getReviewPhotos = (review, index) => {
   if (review.photos && review.photos.length > 0) {
@@ -264,6 +265,7 @@ const Photoset = ({ reviews = [], widget_settings = {} }) => {
           </div>
         </div>
       )}
+      <ReputeUpFooter widget_settings={widget_settings} />
     </Wrapper>
   );
 };

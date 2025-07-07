@@ -17,6 +17,7 @@ import {
   InnerContent
 } from "./InlineSlider.styled";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import ReputeUpFooter from '../Common/ReputeUpFooter';
 
 const InlineSlider = ({ apiId = "1749890233", reviews, widget_settings = {} }) => {
   const textReviews = reviews ? reviews.filter(r => r.review_text) : [];
@@ -142,6 +143,7 @@ const InlineSlider = ({ apiId = "1749890233", reviews, widget_settings = {} }) =
           <QuoteIconRight icon="mingcute:quote-left-fill" />
         </InnerContent>
       </Card>
+      <ReputeUpFooter widget_settings={widget_settings} />
     </Wrapper>
   );
 };

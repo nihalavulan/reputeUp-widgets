@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCards } from 'swiper/modules';
 import Image from 'next/image';
 import Loading from '../Common/Loading';
+import ReputeUpFooter from '../Common/ReputeUpFooter';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -95,6 +96,14 @@ const CardDeck = ({ reviews = [], widget_settings = {} }) => {
           ))}
         </Swiper>
       </CardDeckContainer>
+      <div style={{
+        position: 'absolute',
+        bottom: '20px',
+        right: '20px',
+        zIndex: 1000
+      }}>
+        <ReputeUpFooter widget_settings={widget_settings} size="small" />
+      </div>
     </CardDeckWrapper>
   );
 };

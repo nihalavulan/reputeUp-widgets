@@ -11,6 +11,7 @@ import {
 } from './ReviewBlock.styled';
 import Image from 'next/image';
 import Loading from '../Common/Loading';
+import ReputeUpFooter from '../Common/ReputeUpFooter';
 
 const ReviewBlock = ({ apiId = '1749890233', reviews, widget_settings = {} }) => {
   if (!reviews || reviews.length === 0) {
@@ -85,6 +86,7 @@ const ReviewBlock = ({ apiId = '1749890233', reviews, widget_settings = {} }) =>
           <ReviewBlockText><strong>{(testRating || averageRating).toFixed(1)}</strong> from {totalReviews} reviews</ReviewBlockText>
         </div>
       </ReviewBlockContent>
+      <ReputeUpFooter widget_settings={widget_settings} />
     </ReviewBlockWrapper>
   );
 };

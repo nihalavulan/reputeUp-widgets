@@ -17,6 +17,7 @@ import {
 import StarIcon from "../../assets/icons/Star";
 import Image from 'next/image';
 import Loading from '../Common/Loading';
+import ReputeUpFooter from '../Common/ReputeUpFooter';
 
 const BATCH_SIZE = 8;
 
@@ -142,6 +143,7 @@ const List = ({ apiId = "1749890233", reviews, widget_settings = {} }) => {
           Load More
         </LoadMoreButton>
       )}
+      <ReputeUpFooter widget_settings={widget_settings} />
     </ListWrapper>
   );
 };

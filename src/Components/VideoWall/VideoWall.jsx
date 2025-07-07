@@ -17,6 +17,7 @@ import {
   LoaderText,
 } from "./VideoWall.styled";
 import { Icon } from "@iconify/react";
+import ReputeUpFooter from '../Common/ReputeUpFooter';
 
 const VideoCardComponent = ({
   video,
@@ -324,6 +325,7 @@ const VideoWall = ({ reviews = [], widget_settings = {} }) => {
           />
         ))}
       </VideoWallContainer>
+      <ReputeUpFooter widget_settings={widget_settings} />
     </VideoWallWrapper>
   );
 };

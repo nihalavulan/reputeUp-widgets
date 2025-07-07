@@ -17,6 +17,7 @@ import {
 import StarIcon from "../../assets/icons/Star";
 import Image from 'next/image';
 import Loading from '../Common/Loading';
+import ReputeUpFooter from '../Common/ReputeUpFooter';
 
 const AnimatedWallStarRating = ({ rating }) => {
   const stars = [];
@@ -139,26 +140,43 @@ const AnimatedWall = ({ apiId = "1749890233", reviews, widget_settings = {} }) =
   return (
     <>
       <GlobalStyle />
-      <AnimatedWallMainWrapper bgColor={mainBg} style={{ color: txtColor, fontFamily }}>
-        <AnimatedWallContainer columnsCount={columnsCount}>
-          {reviewRows.map((rowReviews, rowIndex) => (
-            <AnimatedWallRow 
-              key={rowIndex} 
-              direction={rowIndex === 1 ? 'down' : 'up'}
-            >
-              {rowReviews.map((review, cardIndex) => (
-                <AnimatedWallReviewCard
-                  key={`${review.id}-${cardIndex}`}
-                  review={review}
-                  cardBgColor={cardBgColor}
-                  txtColor={txtColor}
-                  fontFamily={fontFamily}
-                />
-              ))}
-            </AnimatedWallRow>
-          ))}
-        </AnimatedWallContainer>
-      </AnimatedWallMainWrapper>
+      <div style={{ 
+        height: '100vh', 
+        background: mainBg, 
+        color: txtColor, 
+        fontFamily,
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        <AnimatedWallMainWrapper bgColor={mainBg} style={{ color: txtColor, fontFamily }}>
+          <AnimatedWallContainer columnsCount={columnsCount}>
+            {reviewRows.map((rowReviews, rowIndex) => (
+              <AnimatedWallRow 
+                key={rowIndex} 
+                direction={rowIndex === 1 ? 'down' : 'up'}
+              >
+                {rowReviews.map((review, cardIndex) => (
+                  <AnimatedWallReviewCard
+                    key={`${review.id}-${cardIndex}`}
+                    review={review}
+                    cardBgColor={cardBgColor}
+                    txtColor={txtColor}
+                    fontFamily={fontFamily}
+                  />
+                ))}
+              </AnimatedWallRow>
+            ))}
+          </AnimatedWallContainer>
+        </AnimatedWallMainWrapper>
+        <div style={{
+          position: 'absolute',
+          bottom: '20px',
+          right: '20px',
+          zIndex: 1000
+        }}>
+          <ReputeUpFooter widget_settings={widget_settings} />
+        </div>
+      </div>
     </>
   );
 };
