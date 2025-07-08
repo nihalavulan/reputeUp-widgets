@@ -19,13 +19,13 @@ import Image from 'next/image';
 import Loading from '../Common/Loading';
 import ReputeUpFooter from '../Common/ReputeUpFooter';
 
-const AnimatedWallStarRating = ({ rating }) => {
-  const stars = [];
-  for (let i = 0; i < rating; i++) {
-    stars.push(<StarIcon key={i} />);
-  }
-  return <AnimatedWallStarsContainer>{stars}</AnimatedWallStarsContainer>;
-};
+// const AnimatedWallStarRating = ({ rating }) => {
+//   const stars = [];
+//   for (let i = 0; i < rating; i++) {
+//     stars.push(<StarIcon key={i} />);
+//   }
+//   return <AnimatedWallStarsContainer>{stars}</AnimatedWallStarsContainer>;
+// };
 
 const AnimatedWallReviewCard = ({ review, cardBgColor, txtColor, fontFamily }) => {
   const [expanded, setExpanded] = useState(false);
