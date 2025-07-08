@@ -294,7 +294,7 @@ const ProofPanel = ({ reviews = [], widget_settings = {}, widgetId }) => {
           </ProofPanelLoadMoreButton>
         </ProofPanelLoadMoreContainer>
       )}
-      <ReputeUpFooter widget_settings={widget_settings} widgetId={widgetId} />
+      <ReputeUpFooter widget_settings={widget_settings} widgetId={widgetId} absolute={false} />
     </ProofPanelWrapper>
   );
 };

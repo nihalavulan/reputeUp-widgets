@@ -215,7 +215,8 @@ const Grid = ({ apiId = "1749890233", reviews, widget_settings = {}, widgetId })
           </ModalContent>
         </ModalOverlay>
       )}
-      <ReputeUpFooter widget_settings={widget_settings} widgetId={widgetId} />
+      {/* Place footer after all content */}
+      <ReputeUpFooter widget_settings={widget_settings} widgetId={widgetId} absolute={false} />
     </>
   );
 };

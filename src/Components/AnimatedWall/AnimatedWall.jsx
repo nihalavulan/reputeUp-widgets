@@ -168,14 +168,8 @@ const AnimatedWall = ({ apiId = "1749890233", reviews, widget_settings = {}, wid
             ))}
           </AnimatedWallContainer>
         </AnimatedWallMainWrapper>
-        <div style={{
-          position: 'absolute',
-          bottom: '20px',
-          right: '20px',
-          zIndex: 1000
-        }}>
-          <ReputeUpFooter widget_settings={widget_settings} widgetId={widgetId} />
-        </div>
+        {/* Place footer after all content */}
+        <ReputeUpFooter widget_settings={widget_settings} widgetId={widgetId} absolute={false} />
       </div>
     </>
   );

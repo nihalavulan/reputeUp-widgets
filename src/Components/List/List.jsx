@@ -143,7 +143,7 @@ const List = ({ apiId = "1749890233", reviews, widget_settings = {}, widgetId })
           Load More
         </LoadMoreButton>
       )}
-      <ReputeUpFooter widget_settings={widget_settings} widgetId={widgetId} />
+      <ReputeUpFooter widget_settings={widget_settings} widgetId={widgetId} absolute={false} />
     </ListWrapper>
   );
 };

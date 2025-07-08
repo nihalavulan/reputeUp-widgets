@@ -2,12 +2,14 @@ import styled from "styled-components";
 
 export const CardDeckWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 40px 20px;
   min-height: 450px;
   margin: 20px auto;
   max-width: 1400px;
+  position: relative;
   
   @media (max-width: 768px) {
     padding: 20px 10px;
@@ -29,6 +31,7 @@ export const CardDeckContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-grow: 1;
   
   @media (max-width: 768px) {
     height: 320px;

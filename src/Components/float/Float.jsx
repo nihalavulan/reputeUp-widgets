@@ -343,14 +343,8 @@ const Float = ({ reviews = [], widget_settings = {}, widgetId }) => {
           </FloatFooter>
          </div>
         </FloatContent>
-        <div style={{
-          position: 'absolute',
-          bottom: '20px',
-          right: '20px',
-          zIndex: 1000
-        }}>
-          <ReputeUpFooter widget_settings={widget_settings} size="small" widgetId={widgetId} />
-        </div>
+        {/* Place footer after all content */}
+        <ReputeUpFooter widget_settings={widget_settings} widgetId={widgetId} size="small" absolute={false} />
       </FloatCard>
     </FloatWrapper>
   );

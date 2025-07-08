@@ -86,7 +86,6 @@ const ReviewBlock = ({ apiId = '1749890233', reviews, widget_settings = {}, widg
           <ReviewBlockText><strong>{(testRating || averageRating).toFixed(1)}</strong> from {totalReviews} reviews</ReviewBlockText>
         </div>
       </ReviewBlockContent>
-      <ReputeUpFooter widget_settings={widget_settings} widgetId={widgetId} />
     </ReviewBlockWrapper>
   );
 };

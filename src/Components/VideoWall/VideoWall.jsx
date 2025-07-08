@@ -325,7 +325,8 @@ const VideoWall = ({ reviews = [], widget_settings = {}, widgetId }) => {
           />
         ))}
       </VideoWallContainer>
-      <ReputeUpFooter widget_settings={widget_settings} widgetId={widgetId} />
+      {/* Place footer after all content */}
+      <ReputeUpFooter widget_settings={widget_settings} widgetId={widgetId} absolute={false} />
     </VideoWallWrapper>
   );
 };

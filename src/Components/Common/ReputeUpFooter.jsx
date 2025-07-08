@@ -1,9 +1,9 @@
 import React from 'react';
 import Image from 'next/image';
 import { Icon } from "@iconify/react";
-import { FooterContainer, FooterLink, FooterIcon } from './ReputeUpFooter.styled';
+import { FooterContainer, FooterLink, FooterIcon, LogoContainer, PoweredByText } from './ReputeUpFooter.styled';
 
-const ReputeUpFooter = ({ widget_settings = {}, size, widgetId }) => {
+const ReputeUpFooter = ({ widget_settings = {}, size, widgetId, absolute = true }) => {
   // Only show footer if show_reputo_logo is enabled
   if (!widget_settings.show_reputo_logo) {
     return null;
@@ -16,8 +16,11 @@ const ReputeUpFooter = ({ widget_settings = {}, size, widgetId }) => {
 
   // Choose logo based on size, with fallbacks
   const logoSrc = small
-    ? widget_settings.mini_logo || widget_settings.logo || "https://reputeup.ai/images/new/favicon.png"
+    ? widget_settings.mini_logo ||  "https://reputeup.ai/images/new/favicon.png"
     : widget_settings.logo || "https://reputeup.ai/images/new/logo.svg";
+
+  // Determine if we're using a mini logo
+  const isMiniLogo = small && widget_settings.mini_logo;
 
   // Build tracking URL client-side
   const [trackingUrl, setTrackingUrl] = React.useState('https://track.reputeup.ai');
@@ -39,8 +42,8 @@ const ReputeUpFooter = ({ widget_settings = {}, size, widgetId }) => {
       txtColor={txtColor} 
       fontFamily={fontFamily}
       small={small}
+      absolute={absolute}
     >
-      <span>Powered by</span>
       <FooterLink 
         href={trackingUrl}
         target="_blank" 
@@ -48,13 +51,18 @@ const ReputeUpFooter = ({ widget_settings = {}, size, widgetId }) => {
         linkColor={linkColor}
         small={small}
       >
-        <Image
-          src={logoSrc}
-          alt="ReputeUp"
-          width={small ? 54 : 80}
-          height={small ? 12 : 16}
-          style={{ objectFit: 'contain' }}
-        />
+        <span style={{ display: 'flex', alignItems: 'center', gap: small ? 4 : 6 }}>
+          <PoweredByText>Powered by</PoweredByText>
+          <LogoContainer small={small} isMiniLogo={isMiniLogo}>
+            <Image
+              src={logoSrc}
+              alt="ReputeUp"
+              width={isMiniLogo ? 14 : small ? 54 : 80}
+              height={isMiniLogo ? 14 : small ? 12 : 16}
+              style={{ objectFit: 'contain' }}
+            />
+          </LogoContainer>
+        </span>
         <FooterIcon small={small}>
           <Icon 
             icon="material-symbols:open-in-new" 
@@ -67,4 +75,4 @@ const ReputeUpFooter = ({ widget_settings = {}, size, widgetId }) => {
   );
 };
 
-export default ReputeUpFooter; 
+export default ReputeUpFooter;

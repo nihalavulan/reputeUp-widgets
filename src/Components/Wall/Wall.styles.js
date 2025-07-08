@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const StyledWallMainWrapper = styled.div`
-  padding: 2rem;
+  padding: 2rem 2rem 1rem 2rem; /* Reduce bottom padding */
   background: #ffffff;
   height: auto;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;

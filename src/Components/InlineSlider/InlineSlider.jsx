@@ -143,7 +143,8 @@ const InlineSlider = ({ apiId = "1749890233", reviews, widget_settings = {}, wid
           <QuoteIconRight icon="mingcute:quote-left-fill" />
         </InnerContent>
       </Card>
-      <ReputeUpFooter widget_settings={widget_settings} widgetId={widgetId} />
+      {/* Place footer after all content, at the end of the section */}
+      <ReputeUpFooter widget_settings={widget_settings} widgetId={widgetId} absolute={false} />
     </Wrapper>
   );
 };

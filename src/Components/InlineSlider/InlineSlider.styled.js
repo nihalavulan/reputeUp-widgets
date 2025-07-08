@@ -6,8 +6,8 @@ export const Wrapper = styled.div`
   margin: 1rem 0;
   padding: 0 16px;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
 `;
 
 export const Card = styled.div`

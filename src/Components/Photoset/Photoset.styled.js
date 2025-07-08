@@ -6,8 +6,8 @@ export const Wrapper = styled.div`
   margin: 1rem 0;
   padding: 40px 8px;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   @media (max-width: 600px) {
     padding: 30px 2px;
